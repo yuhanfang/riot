@@ -1,6 +1,7 @@
 package apiclient
 
 import (
+	"context"
 	"fmt"
 	"net/url"
 	"time"
@@ -10,7 +11,6 @@ import (
 	"github.com/yuhanfang/riot/constants/queue"
 	"github.com/yuhanfang/riot/constants/region"
 	"github.com/yuhanfang/riot/constants/season"
-	"golang.org/x/net/context"
 )
 
 type MatchDTO struct {

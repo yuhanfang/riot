@@ -1,12 +1,12 @@
 package apiclient
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/yuhanfang/riot/constants/queue"
 	"github.com/yuhanfang/riot/constants/region"
 	"github.com/yuhanfang/riot/constants/tier"
-	"golang.org/x/net/context"
 )
 
 type LeagueListDTO struct {
