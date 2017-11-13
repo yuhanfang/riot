@@ -28,6 +28,12 @@ type Client interface {
 	GetMatch(context.Context, region.Region, int64) (*MatchDTO, error)
 	GetMatchlist(context.Context, region.Region, int64, *GetMatchlistOptions) (*MatchlistDTO, error)
 	GetRecentMatchlist(context.Context, region.Region, int64) (*MatchlistDTO, error)
+
+	// Summoner API
+
+	GetByAccountID(ctx context.Context, r region.Region, accountID int64) (*SummonerDTO, error)
+	GetBySummonerName(ctx context.Context, r region.Region, name string) (*SummonerDTO, error)
+	GetBySummonerID(ctx context.Context, r region.Region, summonerID int64) (*SummonerDTO, error)
 }
 
 // client is the internal implementation of Client.
@@ -52,14 +58,12 @@ func New(key string, httpClient Doer, limiter ratelimit.Limiter) Client {
 	}
 }
 
-// dispatchAndUnmarshal dispatches the method (see dispatchMethod). If the
-// method returns HTTP okay, then read the body into a buffer and attempt to
-// unmarshal it into the supplied destination. Otherwise, the method returns
-// ErrBadHTTPStatus. In any case, the body is set to read from the beginning of
-// the stream and is left open, as if the response were returned directly from
-// an HTTP request.
-func (c *client) dispatchAndUnmarshal(ctx context.Context, r region.Region, m string, relativePath string, v url.Values, dest interface{}) (*http.Response, error) {
-	res, err := c.dispatchMethod(ctx, r, m, relativePath, v)
+// dispatchAndUnmarshalWithUniquifier is the same as dispatchAndUnmarshal,
+// except with an additional uniquifier parameter that allows special case
+// handling of certain methods that have different quota buckets depending on
+// the relative path.
+func (c *client) dispatchAndUnmarshalWithUniquifier(ctx context.Context, r region.Region, m string, relativePath string, v url.Values, u string, dest interface{}) (*http.Response, error) {
+	res, err := c.dispatchMethod(ctx, r, m, relativePath, v, u)
 	if err != nil {
 		return res, err
 	}
@@ -80,11 +84,21 @@ func (c *client) dispatchAndUnmarshal(ctx context.Context, r region.Region, m st
 	return res, err
 }
 
+// dispatchAndUnmarshal dispatches the method (see dispatchMethod). If the
+// method returns HTTP okay, then read the body into a buffer and attempt to
+// unmarshal it into the supplied destination. Otherwise, the method returns
+// ErrBadHTTPStatus. In any case, the body is set to read from the beginning of
+// the stream and is left open, as if the response were returned directly from
+// an HTTP request.
+func (c *client) dispatchAndUnmarshal(ctx context.Context, r region.Region, m string, relativePath string, v url.Values, dest interface{}) (*http.Response, error) {
+	return c.dispatchAndUnmarshalWithUniquifier(ctx, r, m, relativePath, v, "", dest)
+}
+
 // dispatchMethod calls the given API method for the given region. The
 // relativePath is appended to the method to form the REST endpoint. The given
 // URL values are encoded and passed as URL parameters following the REST
 // endpoint.
-func (c *client) dispatchMethod(ctx context.Context, r region.Region, m string, relativePath string, v url.Values) (*http.Response, error) {
+func (c *client) dispatchMethod(ctx context.Context, r region.Region, m string, relativePath string, v url.Values, uniquifier string) (*http.Response, error) {
 	var suffix, separator string
 
 	if len(v) > 0 {
@@ -105,6 +119,7 @@ func (c *client) dispatchMethod(ctx context.Context, r region.Region, m string, 
 		ApplicationKey: c.key,
 		Region:         string(r),
 		Method:         m,
+		Uniquifier:     uniquifier,
 	})
 
 	if err != nil {

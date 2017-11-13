@@ -260,7 +260,9 @@ func (c *client) GetMatchlist(ctx context.Context, r region.Region, accountID in
 
 func (c *client) GetRecentMatchlist(ctx context.Context, r region.Region, accountID int64) (*MatchlistDTO, error) {
 	var res MatchlistDTO
-	_, err := c.dispatchAndUnmarshal(ctx, r, "/lol/match/v3/matchlists/by-account", fmt.Sprintf("/%d/recent", accountID), nil, &res)
+	// Recent matchlists are a separate API call from matchlists, even though
+	// both have the same Method. Add "recent" as a uniquifier for this method.
+	_, err := c.dispatchAndUnmarshalWithUniquifier(ctx, r, "/lol/match/v3/matchlists/by-account", fmt.Sprintf("/%d/recent", accountID), nil, "recent", &res)
 	return &res, err
 }
 

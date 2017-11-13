@@ -25,6 +25,14 @@ type Invocation struct {
 	// Method is the relative method path with all options stripped. For example,
 	// a valid method is "/lol/match/v3/matches".
 	Method string
+
+	// Uniquifier is an optional token that helps make the Invocation unique. In
+	// almost all instances, the Method is sufficient as a uniquifier, so this can
+	// be left as the empty string. However, for the match API, getting
+	// matchlists by account and getting recent matchlists by account have the same
+	// underlying method with different path arguments. The Uniquifier field
+	// allows the methods to be considered as separate invocations.
+	Uniquifier string
 }
 
 // App returns an invocation that is application-level as opposed to
