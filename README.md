@@ -1,3 +1,10 @@
+This project current includes the following:
+  - Threadsafe, rate-limited API client. See `examples/example_apiclient`
+  - Centralized rate-limiting service (next on the project todo)
+  - More to come
+
+# Project Goals
+
 There are plenty of Riot API clients out there. I've even taken several stabs
 at one myself already. So why make another one? Here is the experience I want to
 build towards:
