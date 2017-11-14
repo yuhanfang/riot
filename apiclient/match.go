@@ -176,7 +176,7 @@ type ParticipantTimelineDTO struct {
 }
 
 type MasteryDTO struct {
-	MasteryId int
+	MasteryID int
 	Rank      int
 }
 
