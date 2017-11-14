@@ -1,3 +1,7 @@
+// This script demonstrates how to use the apiclient package.
+//
+// Before running, set the RIOT_APIKEY enviornment variable to your developer
+// key from the Riot developer portal.
 package main
 
 import (
@@ -39,9 +43,9 @@ func prettyPrint(res interface{}, err error) {
 func main() {
 	key := os.Getenv("RIOT_APIKEY")
 	httpClient := http.DefaultClient
+	ctx := context.Background()
 	limiter := ratelimit.NewLimiter()
 	client := apiclient.New(key, httpClient, limiter)
-	ctx := context.Background()
 
 	// Champion mastery
 
