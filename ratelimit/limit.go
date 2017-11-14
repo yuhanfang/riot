@@ -37,15 +37,6 @@ func (s *singleLimit) Acquire() (ok bool) {
 	return true
 }
 
-// normalize sets quantity to a value between 0 and capacity.
-func (s *singleLimit) normalize() {
-	if s.quantity < 0 {
-		s.quantity = 0
-	} else if s.quantity > s.capacity {
-		s.quantity = s.capacity
-	}
-}
-
 // Cancel adds one to the available quantity. This must only be called
 // following a successful Acquire(), and is intended to be used to signify that
 // an acquired resource was not used. The function does not check whether this
@@ -54,7 +45,6 @@ func (s *singleLimit) Cancel() {
 	s.lock.Lock()
 	defer s.lock.Unlock()
 	s.quantity++
-	s.normalize()
 }
 
 // AddQuantity adds or subtracts the resource after the given duration.
@@ -63,7 +53,6 @@ func (s *singleLimit) AddQuantity(q int64, d time.Duration) {
 		s.lock.Lock()
 		defer s.lock.Unlock()
 		s.quantity += q
-		s.normalize()
 	})
 }
 
@@ -81,7 +70,6 @@ func (s *singleLimit) SetCapacity(c int64) {
 	if s.quantity > c {
 		s.quantity = c
 	}
-	s.normalize()
 }
 
 // MatchRiotCounts reconciles the currently tracked quantity to the given
@@ -99,7 +87,6 @@ func (s *singleLimit) MatchRiotCounts(counts int64, reverseAfter time.Duration) 
 		// it first.
 		if stopped := s.riotMatcher.Stop(); stopped {
 			s.quantity += s.riotOffset
-			s.normalize()
 		}
 	}
 
@@ -113,7 +100,6 @@ func (s *singleLimit) MatchRiotCounts(counts int64, reverseAfter time.Duration) 
 			s.lock.Lock()
 			defer s.lock.Unlock()
 			s.quantity += s.riotOffset
-			s.normalize()
 		})
 	}
 }
