@@ -9,18 +9,18 @@ import (
 	"github.com/yuhanfang/riot/constants/tier"
 )
 
-type LeagueListDTO struct {
+type LeagueList struct {
 	LeagueID string
 	Tier     tier.Tier
-	Entries  []LeagueItemDTO
+	Entries  []LeagueItem
 	Queue    queue.Queue
 	Name     string
 }
 
-type LeagueItemDTO struct {
+type LeagueItem struct {
 	Rank             string
 	HotStreak        bool
-	MiniSeries       MiniSeriesDTO
+	MiniSeries       MiniSeries
 	Wins             int
 	Veteran          bool
 	Losses           int
@@ -31,17 +31,17 @@ type LeagueItemDTO struct {
 	LeaguePoints     int
 }
 
-type MiniSeriesDTO struct {
+type MiniSeries struct {
 	Wins     int
 	Losses   int
 	Target   int
 	Progress string
 }
 
-type LeaguePositionDTO struct {
+type LeaguePositions struct {
 	Rank             string
 	HotStreak        bool
-	MiniSeries       MiniSeriesDTO
+	MiniSeries       MiniSeries
 	Wins             int
 	Veteran          bool
 	Losses           int
@@ -54,26 +54,26 @@ type LeaguePositionDTO struct {
 	LeaguePoints     int
 }
 
-func (c *client) GetChallengerLeague(ctx context.Context, r region.Region, q queue.Queue) (*LeagueListDTO, error) {
-	var res LeagueListDTO
+func (c *client) GetChallengerLeague(ctx context.Context, r region.Region, q queue.Queue) (*LeagueList, error) {
+	var res LeagueList
 	_, err := c.dispatchAndUnmarshal(ctx, r, "/lol/league/v3/challengerleagues/by-queue", fmt.Sprintf("/%s", q.String()), nil, &res)
 	return &res, err
 }
 
-func (c *client) GetMasterLeague(ctx context.Context, r region.Region, q queue.Queue) (*LeagueListDTO, error) {
-	var res LeagueListDTO
+func (c *client) GetMasterLeague(ctx context.Context, r region.Region, q queue.Queue) (*LeagueList, error) {
+	var res LeagueList
 	_, err := c.dispatchAndUnmarshal(ctx, r, "/lol/league/v3/masterleagues/by-queue", fmt.Sprintf("/%s", q.String()), nil, &res)
 	return &res, err
 }
 
-func (c *client) GetLeagueByID(ctx context.Context, r region.Region, leagueID string) (*LeagueListDTO, error) {
-	var res LeagueListDTO
+func (c *client) GetLeagueByID(ctx context.Context, r region.Region, leagueID string) (*LeagueList, error) {
+	var res LeagueList
 	_, err := c.dispatchAndUnmarshal(ctx, r, "/lol/league/v3/leagues", fmt.Sprintf("/%d", leagueID), nil, &res)
 	return &res, err
 }
 
-func (c *client) GetAllLeaguePositionsForSummoner(ctx context.Context, r region.Region, summonerID int64) (*LeaguePositionDTO, error) {
-	var res LeaguePositionDTO
+func (c *client) GetAllLeaguePositionsForSummoner(ctx context.Context, r region.Region, summonerID int64) (*LeaguePositions, error) {
+	var res LeaguePositions
 	_, err := c.dispatchAndUnmarshal(ctx, r, "/lol/league/v3/positions/by-summoner", fmt.Sprintf("/%d", summonerID), nil, &res)
 	return &res, err
 }

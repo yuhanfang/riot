@@ -7,31 +7,31 @@ import (
 	"github.com/yuhanfang/riot/constants/region"
 )
 
-type CurrentGameInfoDTO struct {
-	GameID            int64                       // The ID of the game
-	GameStartTime     int64                       // The game start time represented in epoch milliseconds
-	PlatformID        string                      // The ID of the platform on which the game is being played
-	GameMode          string                      // The game mode
-	MapID             int64                       // The ID of the map
-	GameType          string                      // The game type
-	BannedChampions   []BannedChampionDTO         // Banned champion information
-	Observers         ObserverDTO                 // The observer information
-	Participants      []CurrentGameParticipantDTO // The participant information
-	GameLength        int64                       // The amount of time in seconds that has passed since the game started
-	GameQueueConfigID int64                       // The queue type (queue types are documented on the Game Constants page)
+type CurrentGameInfo struct {
+	GameID            int64                    // The ID of the game
+	GameStartTime     int64                    // The game start time represented in epoch milliseconds
+	PlatformID        string                   // The ID of the platform on which the game is being played
+	GameMode          string                   // The game mode
+	MapID             int64                    // The ID of the map
+	GameType          string                   // The game type
+	BannedChampions   []BannedChampion         // Banned champion information
+	Observers         Observer                 // The observer information
+	Participants      []CurrentGameParticipant // The participant information
+	GameLength        int64                    // The amount of time in seconds that has passed since the game started
+	GameQueueConfigID int64                    // The queue type (queue types are documented on the Game Constants page)
 }
 
-type BannedChampionDTO struct {
+type BannedChampion struct {
 	PickTurn   int   // The turn during which the champion was banned
 	ChampionID int64 // The ID of the banned champion
 	TeamID     int64 // The ID of the team that banned the champion
 }
 
-type ObserverDTO struct {
+type Observer struct {
 	EncryptionKey string // Key used to decrypt the spectator grid game data for playback
 }
 
-type CurrentGameParticipantDTO struct {
+type CurrentGameParticipant struct {
 	ProfileIconId int64                              // The ID of the profile icon used by this participant
 	ChampionId    int64                              // The ID of the champion played by this participant
 	SummonerName  string                             // The summoner name of this participant
@@ -54,13 +54,13 @@ type CurrentGameParticipantMasteryDTO struct {
 	Rank      int   // The number of points put into this mastery by the user
 }
 
-func (c *client) GetCurrentGameInfoBySummoner(ctx context.Context, r region.Region, summonerID int64) (*CurrentGameInfoDTO, error) {
-	var res CurrentGameInfoDTO
+func (c *client) GetCurrentGameInfoBySummoner(ctx context.Context, r region.Region, summonerID int64) (*CurrentGameInfo, error) {
+	var res CurrentGameInfo
 	_, err := c.dispatchAndUnmarshal(ctx, r, "/lol/spectator/v3/active-games/by-summoner", fmt.Sprintf("/%d", summonerID), nil, &res)
 	return &res, err
 }
 
-type FeaturedGamesDTO struct {
+type FeaturedGames struct {
 	ClientRefreshInterval int64                 // The suggested interval to wait before requesting FeaturedGames again
 	GameList              []FeaturedGameInfoDTO // 	The list of featured games
 }
@@ -72,8 +72,8 @@ type FeaturedGameInfoDTO struct {
 	GameMode          string                       // The game mode
 	MapId             int64                        // The ID of the map
 	GameType          string                       // The game type
-	BannedChampions   []BannedChampionDTO          // 	Banned champion information
-	Observers         ObserverDTO                  // The observer information
+	BannedChampions   []BannedChampion             // 	Banned champion information
+	Observers         Observer                     // The observer information
 	Participants      []FeaturedGameParticipantDTO //The participant information
 	GameLength        int64                        // The amount of time in seconds that has passed since the game started
 	GameQueueConfigId int64                        // The queue type (queue types are documented on the Game Constants page)
@@ -89,8 +89,8 @@ type FeaturedGameParticipantDTO struct {
 	Spell1Id      int64  // The ID of the first summoner spell used by this participant
 }
 
-func (c *client) GetFeaturedGames(ctx context.Context, r region.Region) (*FeaturedGamesDTO, error) {
-	var res FeaturedGamesDTO
+func (c *client) GetFeaturedGames(ctx context.Context, r region.Region) (*FeaturedGames, error) {
+	var res FeaturedGames
 	_, err := c.dispatchAndUnmarshal(ctx, r, "/lol/spectator/v3/featured-games", "", nil, &res)
 	return &res, err
 }

@@ -7,7 +7,7 @@ import (
 	"github.com/yuhanfang/riot/constants/region"
 )
 
-type SummonerDTO struct {
+type Summoner struct {
 	ProfileIconID int    // ID of the summoner icon associated with the summoner.
 	Name          string //Summoner name.
 	SummonerLevel int64  // Summoner level associated with the summoner.
@@ -16,20 +16,20 @@ type SummonerDTO struct {
 	AccountID     int64  //Account ID.
 }
 
-func (c *client) GetByAccountID(ctx context.Context, r region.Region, accountID int64) (*SummonerDTO, error) {
-	var res SummonerDTO
+func (c *client) GetByAccountID(ctx context.Context, r region.Region, accountID int64) (*Summoner, error) {
+	var res Summoner
 	_, err := c.dispatchAndUnmarshal(ctx, r, "/lol/summoner/v3/summoners/by-account", fmt.Sprintf("/%d", accountID), nil, &res)
 	return &res, err
 }
 
-func (c *client) GetBySummonerName(ctx context.Context, r region.Region, name string) (*SummonerDTO, error) {
-	var res SummonerDTO
+func (c *client) GetBySummonerName(ctx context.Context, r region.Region, name string) (*Summoner, error) {
+	var res Summoner
 	_, err := c.dispatchAndUnmarshal(ctx, r, "/lol/summoner/v3/summoners/by-name", fmt.Sprintf("/%s", name), nil, &res)
 	return &res, err
 }
 
-func (c *client) GetBySummonerID(ctx context.Context, r region.Region, summonerID int64) (*SummonerDTO, error) {
-	var res SummonerDTO
+func (c *client) GetBySummonerID(ctx context.Context, r region.Region, summonerID int64) (*Summoner, error) {
+	var res Summoner
 	_, err := c.dispatchAndUnmarshal(ctx, r, "/lol/summoner/v3/summoners", fmt.Sprintf("/%d", summonerID), nil, &res)
 	return &res, err
 }

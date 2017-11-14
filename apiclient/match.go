@@ -13,28 +13,28 @@ import (
 	"github.com/yuhanfang/riot/constants/season"
 )
 
-type MatchDTO struct {
+type Match struct {
 	SeasonID              int
 	QueueID               int
 	GameID                int64
-	ParticipantIdentities []ParticipantIdentityDTO
+	ParticipantIdentities []ParticipantIdentity
 	GameVersion           string
 	PlatformID            string
 	GameMode              string
 	MapID                 int
 	GameType              string
-	Teams                 []TeamStatsDTO
-	Participants          []ParticipantDTO
+	Teams                 []TeamStats
+	Participants          []Participant
 	GameDuration          int64
 	GameCreation          int64
 }
 
-type ParticipantIdentityDTO struct {
-	Player        PlayerDTO
+type ParticipantIdentity struct {
+	Player        Player
 	ParticipantID int
 }
 
-type PlayerDTO struct {
+type Player struct {
 	CurrentPlatformID string
 	SummonerName      string
 	MatchHistoryUri   string
@@ -45,10 +45,10 @@ type PlayerDTO struct {
 	AccountID         int64
 }
 
-type TeamStatsDTO struct {
+type TeamStats struct {
 	FirstDragon          bool
 	FirstInhibitor       bool
-	Bans                 []TeamBansDTO
+	Bans                 []TeamBans
 	BaronKills           int
 	FirstRiftHerald      bool
 	FirstBaron           bool
@@ -64,25 +64,25 @@ type TeamStatsDTO struct {
 	DragonKills          int
 }
 
-type TeamBansDTO struct {
+type TeamBans struct {
 	PickTurn   int
 	ChampionID champion.Champion
 }
 
-type ParticipantDTO struct {
-	Stats                     ParticipantStatsDTO
+type Participant struct {
+	Stats                     ParticipantStats
 	ParticipantId             int
-	Runes                     []RuneDTO
-	Timeline                  ParticipantTimelineDTO
+	Runes                     []Rune
+	Timeline                  ParticipantTimeline
 	TeamId                    int
 	Spell2Id                  int
-	Masteries                 []MasteryDTO
+	Masteries                 []Mastery
 	HighestAchievedSeasonTier string
 	Spell1Id                  int
 	ChampionId                champion.Champion
 }
 
-type ParticipantStatsDTO struct {
+type ParticipantStats struct {
 	PhysicalDamageDealt             int64
 	NeutralMinionsKilledTeamJungle  int
 	MagicDamageDealt                int64
@@ -157,12 +157,12 @@ type ParticipantStatsDTO struct {
 	PhysicalDamageTaken             int64
 }
 
-type RuneDTO struct {
+type Rune struct {
 	RuneID int
 	Rank   int
 }
 
-type ParticipantTimelineDTO struct {
+type ParticipantTimeline struct {
 	Lane                        string
 	ParticipantID               int
 	CSDiffPerMinDeltas          map[string]float64
@@ -175,18 +175,18 @@ type ParticipantTimelineDTO struct {
 	DamageTakenPerMinDeltas     map[string]float64
 }
 
-type MasteryDTO struct {
+type Mastery struct {
 	MasteryID int
 	Rank      int
 }
 
-func (c *client) GetMatch(ctx context.Context, r region.Region, matchID int64) (*MatchDTO, error) {
-	var res MatchDTO
+func (c *client) GetMatch(ctx context.Context, r region.Region, matchID int64) (*Match, error) {
+	var res Match
 	_, err := c.dispatchAndUnmarshal(ctx, r, "/lol/match/v3/matches", fmt.Sprintf("/%d", matchID), nil, &res)
 	return &res, err
 }
 
-type MatchlistDTO struct {
+type Matchlist struct {
 	Matches    []MatchReferenceDTO
 	TotalGames int
 	StartIndex int
@@ -204,6 +204,8 @@ type MatchReferenceDTO struct {
 	Timestamp  int64
 }
 
+// GetMatchlistOptions provides filtering options for GetMatchlist. The zero
+// value means that the option will not be used in filtering.
 type GetMatchlistOptions struct {
 	Queue      []queue.Queue
 	Season     []season.Season
@@ -218,9 +220,9 @@ func timeToUnixMilliseconds(t time.Time) int64 {
 	return t.UnixNano() / int64(time.Millisecond)
 }
 
-func (c *client) GetMatchlist(ctx context.Context, r region.Region, accountID int64, opts *GetMatchlistOptions) (*MatchlistDTO, error) {
+func (c *client) GetMatchlist(ctx context.Context, r region.Region, accountID int64, opts *GetMatchlistOptions) (*Matchlist, error) {
 	var (
-		res  MatchlistDTO
+		res  Matchlist
 		vals url.Values
 	)
 
@@ -258,8 +260,8 @@ func (c *client) GetMatchlist(ctx context.Context, r region.Region, accountID in
 	return &res, err
 }
 
-func (c *client) GetRecentMatchlist(ctx context.Context, r region.Region, accountID int64) (*MatchlistDTO, error) {
-	var res MatchlistDTO
+func (c *client) GetRecentMatchlist(ctx context.Context, r region.Region, accountID int64) (*Matchlist, error) {
+	var res Matchlist
 	// Recent matchlists are a separate API call from matchlists, even though
 	// both have the same Method. Add "recent" as a uniquifier for this method.
 	_, err := c.dispatchAndUnmarshalWithUniquifier(ctx, r, "/lol/match/v3/matchlists/by-account", fmt.Sprintf("/%d/recent", accountID), nil, "recent", &res)

@@ -10,6 +10,7 @@ import (
 	"net/url"
 	"strings"
 
+	"github.com/yuhanfang/riot/constants/champion"
 	"github.com/yuhanfang/riot/constants/queue"
 	"github.com/yuhanfang/riot/constants/region"
 	"github.com/yuhanfang/riot/ratelimit"
@@ -17,23 +18,74 @@ import (
 
 // Client accesses the Riot API. Use New() to retrieve a valid instance.
 type Client interface {
-	// League API
+	// ----- Champion Mastery API -----
 
-	GetChallengerLeague(context.Context, region.Region, queue.Queue) (*LeagueListDTO, error)
-	GetMasterLeague(context.Context, region.Region, queue.Queue) (*LeagueListDTO, error)
-	GetAllLeaguePositionsForSummoner(context.Context, region.Region, int64) (*LeaguePositionDTO, error)
+	// GetAllChampionMasteries returns all champion mastery entries sorted by
+	// number of champion points descending.
+	GetAllChampionMasteries(ctx context.Context, r region.Region, summonerID int64) ([]ChampionMastery, error)
 
-	// Match API
+	// GetChampionMastery returns champion mastery by summoner ID and champion.
+	GetChampionMastery(ctx context.Context, r region.Region, summonerID int64, champ champion.Champion) (*ChampionMastery, error)
 
-	GetMatch(context.Context, region.Region, int64) (*MatchDTO, error)
-	GetMatchlist(context.Context, region.Region, int64, *GetMatchlistOptions) (*MatchlistDTO, error)
-	GetRecentMatchlist(context.Context, region.Region, int64) (*MatchlistDTO, error)
+	// GetChampionMasteryScore returns a player's total champion mastery score,
+	// which is the sum of individual champion mastery levels.
+	GetChampionMasteryScore(ctx context.Context, r region.Region, summonerID int64) (int, error)
 
-	// Summoner API
+	// ----- Champions API -----
 
-	GetByAccountID(ctx context.Context, r region.Region, accountID int64) (*SummonerDTO, error)
-	GetBySummonerName(ctx context.Context, r region.Region, name string) (*SummonerDTO, error)
-	GetBySummonerID(ctx context.Context, r region.Region, summonerID int64) (*SummonerDTO, error)
+	// GetChampions returns all champions.
+	GetChampions(ctx context.Context, r region.Region) (*ChampionList, error)
+
+	// GetChampionsByID returns champion information for a specific champion.
+	GetChampionsByID(ctx context.Context, r region.Region, champ champion.Champion) (*Champion, error)
+
+	// ----- League API -----
+
+	// GetChallengerLeague returns the challenger league for the given queue.
+	GetChallengerLeague(context.Context, region.Region, queue.Queue) (*LeagueList, error)
+
+	// GetMasterLeague returns the master league for the given queue.
+	GetMasterLeague(context.Context, region.Region, queue.Queue) (*LeagueList, error)
+
+	// GetAllLeaguePositionsForSummoner returns league positions in all queues
+	// for the given summoner ID.
+	GetAllLeaguePositionsForSummoner(ctx context.Context, r region.Region, summonerID int64) (*LeaguePositions, error)
+
+	// GetLeagueByID returns the league with given ID, including inactive
+	// entries.
+	GetLeagueByID(ctx context.Context, r region.Region, leagueID string) (*LeagueList, error)
+
+	// ----- Match API -----
+
+	// GetMatch returns a match by match ID.
+	GetMatch(ctx context.Context, r region.Region, matchID int64) (*Match, error)
+
+	// GetMatchlist returns a matchlist for games played on a given account ID
+	// and filtered using given filter parameters, if any.
+	GetMatchlist(ctx context.Context, r region.Region, accountID int64, opts *GetMatchlistOptions) (*Matchlist, error)
+
+	// GetRecentMatchlist returns the last 20 matches played on the given account ID.
+	GetRecentMatchlist(ctx context.Context, r region.Region, accountID int64) (*Matchlist, error)
+
+	// ----- Spectator API -----
+
+	// GetFeaturedGames returns a list of featured games.
+	GetFeaturedGames(ctx context.Context, r region.Region) (*FeaturedGames, error)
+
+	// GetCurrentGameInfoBySummoner returns current game information for a given
+	// summoner ID.
+	GetCurrentGameInfoBySummoner(ctx context.Context, r region.Region, summonerID int64) (*CurrentGameInfo, error)
+
+	// ----- Summoner API -----
+
+	// GetByAccountID returns a summoner by account ID.
+	GetByAccountID(ctx context.Context, r region.Region, accountID int64) (*Summoner, error)
+
+	// GetBySummonerName returns a summoner by summoner name.
+	GetBySummonerName(ctx context.Context, r region.Region, name string) (*Summoner, error)
+
+	// GetBySummonerID returns a sumoner by summoner ID.
+	GetBySummonerID(ctx context.Context, r region.Region, summonerID int64) (*Summoner, error)
 }
 
 // client is the internal implementation of Client.

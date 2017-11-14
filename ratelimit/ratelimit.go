@@ -33,6 +33,11 @@ type Invocation struct {
 	// underlying method with different path arguments. The Uniquifier field
 	// allows the methods to be considered as separate invocations.
 	Uniquifier string
+
+	// NoAppQuota is true if the invocation doesn't take up appliation quota. The
+	// default false value is typical for most invocations, which do in fact use
+	// app quota.
+	NoAppQuota bool
 }
 
 // App returns an invocation that is application-level as opposed to
@@ -199,6 +204,42 @@ func (l *limiter) matchRiotCounts(header string, inv Invocation) error {
 	return nil
 }
 
+// cancelAllAcquired cancels all acquired limits in the given map.
+func cancelAllAcquired(acquired map[int64]*singleLimit) {
+	for _, lim := range acquired {
+		lim.Cancel()
+	}
+}
+
+// acquireAllOrCancel acquires all time interval quota for the given
+// invocation, returning the acquired limits and true on success. If any
+// interval quota cannot be acquired, then return nil and false.
+func (l *limiter) acquireAllOrCancel(inv Invocation) (map[int64]*singleLimit, bool) {
+	limits := l.getInvocationLimit(inv)
+	if limits == nil {
+		return nil, true
+	}
+
+	acquired := make(map[int64]*singleLimit)
+	allAcquired := true
+	limits.ForEachLimit(func(seconds int64, lim *singleLimit) bool {
+		if lim.Acquire() {
+			acquired[seconds] = lim
+			return true
+		}
+		allAcquired = false
+		return false
+	})
+
+	if allAcquired {
+		return acquired, true
+	}
+
+	cancelAllAcquired(acquired)
+
+	return nil, false
+}
+
 // Acquire blocks until all configured limits for the invocation are satisfied,
 // or until the context is cancelled. Once acquired, the rate resource is
 // reserved until Done() or Cancel() are called and return nil.
@@ -208,34 +249,25 @@ func (l *limiter) Acquire(ctx context.Context, inv Invocation) (Done, Cancel, er
 		return nil, nil, err
 	}
 
-	var acquired map[int64]*singleLimit
+	var (
+		appAcquired, acquired       map[int64]*singleLimit
+		appAllAcquired, allAcquired bool
+	)
 
 	for {
-		limits := l.getInvocationLimit(inv)
-		if limits == nil {
-			break
+		if inv.NoAppQuota {
+			appAllAcquired = true
+		} else {
+			appAcquired, appAllAcquired = l.acquireAllOrCancel(inv.App())
 		}
 
-		acquired = make(map[int64]*singleLimit)
-		allAcquired := true
-		limits.ForEachLimit(func(seconds int64, lim *singleLimit) bool {
-			if lim.Acquire() {
-				acquired[seconds] = lim
-				return true
+		if appAllAcquired {
+			acquired, allAcquired = l.acquireAllOrCancel(inv)
+			if allAcquired {
+				break
 			}
-			allAcquired = false
-			return false
-		})
-
-		if allAcquired {
-			break
+			cancelAllAcquired(appAcquired)
 		}
-
-		// Did not acquire everything, so roll back and try again.
-		for _, lim := range acquired {
-			lim.Cancel()
-		}
-
 		// Sleep before retrying, up until cancellation.
 		select {
 		case <-time.NewTimer(sleepBeforeRetryAcquire).C:
@@ -248,6 +280,9 @@ func (l *limiter) Acquire(ctx context.Context, inv Invocation) (Done, Cancel, er
 
 	done := func(res *http.Response) error {
 		refundOnce.Do(func() {
+			for seconds, lim := range appAcquired {
+				lim.AddQuantity(1, time.Duration(seconds)*time.Second)
+			}
 			for seconds, lim := range acquired {
 				lim.AddQuantity(1, time.Duration(seconds)*time.Second)
 			}
@@ -308,9 +343,8 @@ func (l *limiter) Acquire(ctx context.Context, inv Invocation) (Done, Cancel, er
 
 	cancel := func() error {
 		cancelOnce.Do(func() {
-			for _, lim := range acquired {
-				lim.Cancel()
-			}
+			cancelAllAcquired(appAcquired)
+			cancelAllAcquired(acquired)
 		})
 		return nil
 	}
