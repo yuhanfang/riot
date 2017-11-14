@@ -9,6 +9,18 @@ import (
 type singleLimit struct {
 	lock sync.Mutex
 
+	// riotMatcher is a timer that fires a reconciliation event. For example, if
+	// Riot believes we have used 100 and we believe we have used 90, then we
+	// will immediately up our estimate us usage by 10, and then decrease by 10
+	// after some time has elapsed. Only one reconciliation event is needed at
+	// any given point, since a future reconciliation should immediately replace
+	// the existing one.
+	riotMatcher *time.Timer
+
+	// riotOffset is the quantity that will be added back following the
+	// expiration of riotMatcher.
+	riotOffset int64
+
 	capacity int64
 	quantity int64
 }
@@ -17,11 +29,21 @@ type singleLimit struct {
 func (s *singleLimit) Acquire() (ok bool) {
 	s.lock.Lock()
 	defer s.lock.Unlock()
-	if s.quantity <= 0 {
+
+	if s.quantity == 0 {
 		return false
 	}
 	s.quantity--
 	return true
+}
+
+// normalize sets quantity to a value between 0 and capacity.
+func (s *singleLimit) normalize() {
+	if s.quantity < 0 {
+		s.quantity = 0
+	} else if s.quantity > s.capacity {
+		s.quantity = s.capacity
+	}
 }
 
 // Cancel adds one to the available quantity. This must only be called
@@ -32,9 +54,7 @@ func (s *singleLimit) Cancel() {
 	s.lock.Lock()
 	defer s.lock.Unlock()
 	s.quantity++
-	if s.quantity > s.capacity {
-		s.quantity = s.capacity
-	}
+	s.normalize()
 }
 
 // AddQuantity adds or subtracts the resource after the given duration.
@@ -43,9 +63,7 @@ func (s *singleLimit) AddQuantity(q int64, d time.Duration) {
 		s.lock.Lock()
 		defer s.lock.Unlock()
 		s.quantity += q
-		if s.quantity > s.capacity {
-			s.quantity = s.capacity
-		}
+		s.normalize()
 	})
 }
 
@@ -63,6 +81,7 @@ func (s *singleLimit) SetCapacity(c int64) {
 	if s.quantity > c {
 		s.quantity = c
 	}
+	s.normalize()
 }
 
 // MatchRiotCounts reconciles the currently tracked quantity to the given
@@ -73,19 +92,28 @@ func (s *singleLimit) MatchRiotCounts(counts int64, reverseAfter time.Duration) 
 	s.lock.Lock()
 	defer s.lock.Unlock()
 
+	if s.riotMatcher != nil {
+		// If the reconciliation already happened, there's no need for special
+		// logic, since the reconciliation we are about to schedule can be added
+		// right on top. If the reconciliation was pending, then we need to reverse
+		// it first.
+		if stopped := s.riotMatcher.Stop(); stopped {
+			s.quantity += s.riotOffset
+			s.normalize()
+		}
+	}
+
 	// Example: capacity of 10, Riot shows 4 counts => 6 implied quantity
 	impliedQuantity := s.capacity - counts
 
-	if impliedQuantity < s.quantity {
-		offset := s.quantity - impliedQuantity
-		s.quantity -= offset
-		time.AfterFunc(reverseAfter, func() {
+	if impliedQuantity != s.quantity {
+		s.riotOffset = s.quantity - impliedQuantity
+		s.quantity -= s.riotOffset
+		s.riotMatcher = time.AfterFunc(reverseAfter, func() {
 			s.lock.Lock()
 			defer s.lock.Unlock()
-			s.quantity += offset
-			if s.quantity > s.capacity {
-				s.quantity = s.capacity
-			}
+			s.quantity += s.riotOffset
+			s.normalize()
 		})
 	}
 }
