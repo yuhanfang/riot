@@ -188,7 +188,6 @@ func (l *limiter) setCapacityForInvocation(header string, inv Invocation) error 
 // the invocationLimit corresponding to the given Invocation.
 func (l *limiter) matchRiotCounts(header string, inv Invocation) error {
 	counts, err := headerIntMap(header)
-	fmt.Println("Riot counts:", counts)
 	if err != nil {
 		return err
 	}

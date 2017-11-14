@@ -36,8 +36,8 @@ type Client interface {
 	// GetChampions returns all champions.
 	GetChampions(ctx context.Context, r region.Region) (*ChampionList, error)
 
-	// GetChampionsByID returns champion information for a specific champion.
-	GetChampionsByID(ctx context.Context, r region.Region, champ champion.Champion) (*Champion, error)
+	// GetChampionByID returns champion information for a specific champion.
+	GetChampionByID(ctx context.Context, r region.Region, champ champion.Champion) (*Champion, error)
 
 	// ----- League API -----
 
@@ -49,7 +49,7 @@ type Client interface {
 
 	// GetAllLeaguePositionsForSummoner returns league positions in all queues
 	// for the given summoner ID.
-	GetAllLeaguePositionsForSummoner(ctx context.Context, r region.Region, summonerID int64) (*LeaguePositions, error)
+	GetAllLeaguePositionsForSummoner(ctx context.Context, r region.Region, summonerID int64) ([]LeaguePosition, error)
 
 	// GetLeagueByID returns the league with given ID, including inactive
 	// entries.
@@ -59,6 +59,8 @@ type Client interface {
 
 	// GetMatch returns a match by match ID.
 	GetMatch(ctx context.Context, r region.Region, matchID int64) (*Match, error)
+
+	GetMatchTimeline(ctx context.Context, r region.Region, matchID int64) (*MatchTimeline, error)
 
 	// GetMatchlist returns a matchlist for games played on a given account ID
 	// and filtered using given filter parameters, if any.
@@ -120,7 +122,11 @@ func (c *client) dispatchAndUnmarshalWithUniquifier(ctx context.Context, r regio
 		return res, err
 	}
 	if res.StatusCode != http.StatusOK {
-		return res, ErrBadHTTPStatus
+		err, ok := httpErrors[res.StatusCode]
+		if !ok {
+			err = ErrBadHTTPStatus
+		}
+		return res, err
 	}
 
 	b, err := ioutil.ReadAll(res.Body)
@@ -139,9 +145,9 @@ func (c *client) dispatchAndUnmarshalWithUniquifier(ctx context.Context, r regio
 // dispatchAndUnmarshal dispatches the method (see dispatchMethod). If the
 // method returns HTTP okay, then read the body into a buffer and attempt to
 // unmarshal it into the supplied destination. Otherwise, the method returns
-// ErrBadHTTPStatus. In any case, the body is set to read from the beginning of
-// the stream and is left open, as if the response were returned directly from
-// an HTTP request.
+// one of the documented errors. In any case, the body is set to read from the
+// beginning of the stream and is left open, as if the response were returned
+// directly from an HTTP request.
 func (c *client) dispatchAndUnmarshal(ctx context.Context, r region.Region, m string, relativePath string, v url.Values, dest interface{}) (*http.Response, error) {
 	return c.dispatchAndUnmarshalWithUniquifier(ctx, r, m, relativePath, v, "", dest)
 }

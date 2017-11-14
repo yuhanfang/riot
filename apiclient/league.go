@@ -38,7 +38,7 @@ type MiniSeries struct {
 	Progress string
 }
 
-type LeaguePositions struct {
+type LeaguePosition struct {
 	Rank             string
 	HotStreak        bool
 	MiniSeries       MiniSeries
@@ -68,12 +68,12 @@ func (c *client) GetMasterLeague(ctx context.Context, r region.Region, q queue.Q
 
 func (c *client) GetLeagueByID(ctx context.Context, r region.Region, leagueID string) (*LeagueList, error) {
 	var res LeagueList
-	_, err := c.dispatchAndUnmarshal(ctx, r, "/lol/league/v3/leagues", fmt.Sprintf("/%d", leagueID), nil, &res)
+	_, err := c.dispatchAndUnmarshal(ctx, r, "/lol/league/v3/leagues", fmt.Sprintf("/%s", leagueID), nil, &res)
 	return &res, err
 }
 
-func (c *client) GetAllLeaguePositionsForSummoner(ctx context.Context, r region.Region, summonerID int64) (*LeaguePositions, error) {
-	var res LeaguePositions
+func (c *client) GetAllLeaguePositionsForSummoner(ctx context.Context, r region.Region, summonerID int64) ([]LeaguePosition, error) {
+	var res []LeaguePosition
 	_, err := c.dispatchAndUnmarshal(ctx, r, "/lol/league/v3/positions/by-summoner", fmt.Sprintf("/%d", summonerID), nil, &res)
-	return &res, err
+	return res, err
 }

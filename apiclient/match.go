@@ -187,13 +187,13 @@ func (c *client) GetMatch(ctx context.Context, r region.Region, matchID int64) (
 }
 
 type Matchlist struct {
-	Matches    []MatchReferenceDTO
+	Matches    []MatchReference
 	TotalGames int
 	StartIndex int
 	EndIndex   int
 }
 
-type MatchReferenceDTO struct {
+type MatchReference struct {
 	Lane       string
 	GameID     int64
 	Champion   champion.Champion
@@ -268,18 +268,18 @@ func (c *client) GetRecentMatchlist(ctx context.Context, r region.Region, accoun
 	return &res, err
 }
 
-type MatchTimelineDTO struct {
-	Frames        []MatchFrameDTO
+type MatchTimeline struct {
+	Frames        []MatchFrame
 	FrameInterval int64
 }
 
-type MatchFrameDTO struct {
+type MatchFrame struct {
 	Timestamp         int64
-	ParticipantFrames map[int]MatchParticipantFrameDTO
-	Events            []MatchEventDTO
+	ParticipantFrames map[int]MatchParticipantFrame
+	Events            []MatchEvent
 }
 
-type MatchParticipantFrameDTO struct {
+type MatchParticipantFrame struct {
 	TotalGold           int
 	TeamScore           int
 	ParticipantID       int
@@ -287,17 +287,17 @@ type MatchParticipantFrameDTO struct {
 	CurrentGold         int
 	MinionsKilled       int
 	DominionScore       int
-	Position            MatchPositionDTO
+	Position            MatchPosition
 	XP                  int
 	JungleMinionsKilled int
 }
 
-type MatchPositionDTO struct {
+type MatchPosition struct {
 	Y int
 	X int
 }
 
-type MatchEventDTO struct {
+type MatchEvent struct {
 	EventType               string
 	TowerType               string
 	TeamID                  int
@@ -319,12 +319,12 @@ type MatchEventDTO struct {
 	ParticipantID           int
 	BuildingType            string
 	CreatorID               int
-	Position                MatchPositionDTO
+	Position                MatchPosition
 	BeforeID                int
 }
 
-func (c *client) GetMatchTimeline(ctx context.Context, r region.Region, matchID int64) (*MatchTimelineDTO, error) {
-	var res MatchTimelineDTO
+func (c *client) GetMatchTimeline(ctx context.Context, r region.Region, matchID int64) (*MatchTimeline, error) {
+	var res MatchTimeline
 	_, err := c.dispatchAndUnmarshal(ctx, r, "/lol/match/v3/timelines/by-match", fmt.Sprintf("/%d", matchID), nil, &res)
 	return &res, err
 }

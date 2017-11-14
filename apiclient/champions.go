@@ -27,7 +27,7 @@ func (c *client) GetChampions(ctx context.Context, r region.Region) (*ChampionLi
 	return &res, err
 }
 
-func (c *client) GetChampionsByID(ctx context.Context, r region.Region, champ champion.Champion) (*Champion, error) {
+func (c *client) GetChampionByID(ctx context.Context, r region.Region, champ champion.Champion) (*Champion, error) {
 	var res Champion
 	_, err := c.dispatchAndUnmarshalWithUniquifier(ctx, r, "/lol/platform/v3/champions", fmt.Sprintf("/%d", champ), nil, "by-id", &res)
 	return &res, err
