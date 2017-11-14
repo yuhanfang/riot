@@ -1,4 +1,4 @@
-This project current includes the following:
+This project includes the following:
   - Threadsafe, rate-limited API client. See `examples/example_apiclient`
   - Centralized rate-limiting service (next on the project todo)
   - More to come
