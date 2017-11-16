@@ -13,7 +13,7 @@ the client to point to the rate limiting service:
 ```go
 server, err := url.Parse("http://your-server-here:1234")
 limiter := client.New(http.DefaultClient, server)
-client := apiclient.New("MY_API_KEY", limiter)
+client := apiclient.New("MY_API_KEY", http.DefaultClient, limiter)
 ```
 
 Separately, you need to start the server listening on that port:
