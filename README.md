@@ -1,7 +1,26 @@
 This project includes the following:
   - Threadsafe, rate-limited API client. See `examples/example_apiclient`
-  - Centralized rate-limiting service (next on the project todo)
+  - Centralized rate-limiting service. See below.
   - More to come
+
+# Centralized rate limit service
+
+A common problem for large-scale scraping of the Riot API is synchronization of
+limits and quota across multiple clients. This package provides a ratelimit
+server that centralizes quota management. Here is an example of how to set up
+the client to point to the rate limiting service:
+
+```go
+server, err := url.Parse("http://your-server-here:1234")
+limiter := client.New(http.DefaultClient, server)
+client := apiclient.New("MY_API_KEY", limiter)
+```
+
+Separately, you need to start the server listening on that port:
+
+```bash
+ratelimit_service --port=1234
+```
 
 # Project Goals
 

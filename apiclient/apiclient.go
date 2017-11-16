@@ -175,8 +175,8 @@ func (c *client) dispatchMethod(ctx context.Context, r region.Region, m string, 
 
 	done, _, err := c.r.Acquire(ctx, ratelimit.Invocation{
 		ApplicationKey: c.key,
-		Region:         string(r),
-		Method:         m,
+		Region:         strings.ToUpper(string(r)),
+		Method:         strings.ToLower(m),
 		Uniquifier:     uniquifier,
 	})
 
