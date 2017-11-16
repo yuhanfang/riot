@@ -22,6 +22,9 @@ Separately, you need to start the server listening on that port:
 ratelimit_service --port=1234
 ```
 
+The rate limit server is a simple RESTful service, and isn't limited to Go.
+See the service documentation for details on the REST API.
+
 # Project Goals
 
 There are plenty of Riot API clients out there. I've even taken several stabs
