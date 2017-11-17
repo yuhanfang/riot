@@ -57,6 +57,22 @@ func (g *googleDatastore) Put(ctx context.Context, key string, val interface{}, 
 	return err
 }
 
+func (g *googleDatastore) Purge(ctx context.Context, key string, keep int) error {
+	query := datastore.NewQuery(key).Namespace(g.namespace).Order("__key__").KeysOnly()
+	keys, err := g.client.GetAll(ctx, query, nil)
+	if err != nil {
+		return err
+	}
+	var toDelete []*datastore.Key
+	for i := keep; i < len(keys); i++ {
+		toDelete = append(toDelete, keys[i])
+	}
+	if len(toDelete) > 0 {
+		return g.client.DeleteMulti(ctx, toDelete)
+	}
+	return nil
+}
+
 func NewDatastore(ctx context.Context, project, namespace string) (cachedclient.Datastore, error) {
 	ds, err := datastore.NewClient(ctx, project)
 	if err != nil {

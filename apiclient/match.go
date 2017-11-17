@@ -199,7 +199,7 @@ type MatchReference struct {
 	Champion   champion.Champion
 	PlatformID string
 	Season     season.Season
-	Queue      int
+	Queue      queue.Queue
 	Role       string
 	Timestamp  int64
 }
