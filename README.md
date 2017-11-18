@@ -2,7 +2,11 @@ This project includes the following:
   - Threadsafe, rate-limited API client. See `examples/example_apiclient`
   - Centralized rate-limiting service. See below.
   - Cached client with a Google Cloud backend. See `examples/example_cachedclient`
-  - More to come
+
+In development are the following:
+  - Champion select solver. Given a utility function for evaluating a team
+    composition, solve for optimal pick/ban either as of the beginning of the
+    game, or as of any node given any current state. See `analytics/champion_select/solver`
 
 # Centralized rate limit service
 
