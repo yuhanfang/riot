@@ -178,15 +178,12 @@ func (s State) Bans() ChampionSet {
 
 // Unavailable returns a set of all champions currently picked or banned.
 func (s State) Unavailable() ChampionSet {
-	unavailable := s.Blue()
-	red := s.Red()
-	ban := s.Bans()
-
-	for k := range red {
-		unavailable[k] = true
-	}
-	for k := range ban {
-		unavailable[k] = true
+	unavailable := ChampionSet(make(map[champion.Champion]bool))
+	for _, v := range s.Actions {
+		if v == 0 {
+			break
+		}
+		unavailable[v] = true
 	}
 	return unavailable
 }
