@@ -197,7 +197,7 @@ func filterMatchlist(m *apiclient.Matchlist, opts *apiclient.GetMatchlistOptions
 			continue
 		}
 
-		ts := time.Unix(0, match.Timestamp*int64(time.Millisecond)/int64(time.Nanosecond))
+		ts := match.Timestamp.Time()
 		if opts.BeginTime != nil && opts.EndTime != nil {
 			if opts.BeginTime.After(ts) || opts.EndTime.Before(ts) {
 				continue

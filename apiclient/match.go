@@ -18,8 +18,8 @@ import (
 )
 
 type Match struct {
-	SeasonID              int
-	QueueID               int
+	SeasonID              season.Season
+	QueueID               queue.Queue
 	GameID                int64
 	ParticipantIdentities []ParticipantIdentity
 	GameVersion           string
@@ -29,8 +29,8 @@ type Match struct {
 	GameType              string
 	Teams                 []TeamStats
 	Participants          []Participant
-	GameDuration          int64
-	GameCreation          int64
+	GameDuration          Milliseconds
+	GameCreation          Milliseconds
 }
 
 type ParticipantIdentity struct {
@@ -251,7 +251,7 @@ type MatchReference struct {
 	Season     season.Season
 	Queue      queue.Queue
 	Role       string
-	Timestamp  int64
+	Timestamp  Milliseconds
 }
 
 // GetMatchlistOptions provides filtering options for GetMatchlist. The zero
@@ -267,7 +267,7 @@ type GetMatchlistOptions struct {
 }
 
 func timeToUnixMilliseconds(t time.Time) int64 {
-	return t.UnixNano() / int64(time.Millisecond)
+	return t.UnixNano() / int64(time.Millisecond/time.Nanosecond)
 }
 
 func (c *client) GetMatchlist(ctx context.Context, r region.Region, accountID int64, opts *GetMatchlistOptions) (*Matchlist, error) {
@@ -320,7 +320,7 @@ func (c *client) GetRecentMatchlist(ctx context.Context, r region.Region, accoun
 
 type MatchTimeline struct {
 	Frames        []MatchFrame
-	FrameInterval int64
+	FrameInterval Milliseconds
 }
 
 // ParticipantFrames stores frames corresponding to each participant. The order
@@ -345,7 +345,7 @@ func (p *ParticipantFrames) UnmarshalJSON(b []byte) error {
 }
 
 type MatchFrame struct {
-	Timestamp         int64
+	Timestamp         Milliseconds
 	ParticipantFrames ParticipantFrames
 	Events            []MatchEvent
 }
@@ -382,7 +382,7 @@ type MatchEvent struct {
 	Type                    event.Event
 	SkillSlot               int
 	VictimID                int
-	Timestamp               int64
+	Timestamp               Milliseconds
 	AfterID                 int
 	MonsterSubType          string
 	LaneType                lane.Type
