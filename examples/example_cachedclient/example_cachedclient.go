@@ -57,7 +57,15 @@ func main() {
 	challenger, err := client.GetChallengerLeague(ctx, reg, queue.RankedSolo5x5)
 	prettyPrint(challenger, err)
 
-	fmt.Println("GetChallengerLeague")
-	challenger, err = client.GetChallengerLeague(ctx, reg, queue.RankedSolo5x5)
-	prettyPrint(challenger, err)
+	fmt.Println("GetMatchTimeline")
+	timeline, err := client.GetMatchTimeline(ctx, reg, game)
+	prettyPrint(timeline, err)
+
+	fmt.Println("GetMatch")
+	match, err := client.GetMatch(ctx, reg, game)
+	prettyPrint(match, err)
+
+	fmt.Println("GetMatchlist")
+	matchlist, err := client.GetMatchlist(ctx, reg, account, nil)
+	prettyPrint(matchlist, err)
 }

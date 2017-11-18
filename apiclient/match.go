@@ -2,12 +2,16 @@ package apiclient
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"net/url"
+	"strconv"
+	"strings"
 	"time"
 
 	"github.com/yuhanfang/riot/constants/champion"
 	"github.com/yuhanfang/riot/constants/event"
+	"github.com/yuhanfang/riot/constants/lane"
 	"github.com/yuhanfang/riot/constants/queue"
 	"github.com/yuhanfang/riot/constants/region"
 	"github.com/yuhanfang/riot/constants/season"
@@ -54,7 +58,7 @@ type TeamStats struct {
 	FirstBaron           bool
 	RiftHeraldKills      int
 	FirstBlood           bool
-	TeamId               int
+	TeamID               int
 	FirstTower           bool
 	VilemawKills         int
 	InhibitorKills       int
@@ -71,15 +75,15 @@ type TeamBans struct {
 
 type Participant struct {
 	Stats                     ParticipantStats
-	ParticipantId             int
+	ParticipantID             int
 	Runes                     []Rune
 	Timeline                  ParticipantTimeline
-	TeamId                    int
-	Spell2Id                  int
+	TeamID                    int
+	Spell2ID                  int
 	Masteries                 []Mastery
 	HighestAchievedSeasonTier string
-	Spell1Id                  int
-	ChampionId                champion.Champion
+	Spell1ID                  int
+	ChampionID                champion.Champion
 }
 
 type ParticipantStats struct {
@@ -162,17 +166,63 @@ type Rune struct {
 	Rank   int
 }
 
+// Interval represents a range of game time, measured in minutes.
+type Interval struct {
+	Begin int
+	End   int
+}
+
+// IntervalValues represents a mapping from intervals to values.
+type IntervalValues []IntervalValue
+
+func (i *IntervalValues) UnmarshalJSON(b []byte) error {
+	var obj map[string]float64
+	err := json.Unmarshal(b, &obj)
+	if err != nil {
+		return err
+	}
+	var vals []IntervalValue
+	for k, v := range obj {
+		intervals := strings.Split(k, "-")
+		if len(intervals) != 2 {
+			return fmt.Errorf("unable to parse intervals: %v", intervals)
+		}
+		begin, err := strconv.ParseInt(intervals[0], 10, 64)
+		if err != nil {
+			return err
+		}
+		end, err := strconv.ParseInt(intervals[1], 10, 64)
+		if err != nil {
+			return err
+		}
+		vals = append(vals, IntervalValue{
+			Interval: Interval{
+				Begin: int(begin),
+				End:   int(end),
+			},
+			Value: v,
+		})
+	}
+	*i = IntervalValues(vals)
+	return nil
+}
+
+type IntervalValue struct {
+	Interval Interval
+	Value    float64
+}
+
 type ParticipantTimeline struct {
-	Lane                        string
+	Lane                        lane.Lane
 	ParticipantID               int
-	CSDiffPerMinDeltas          map[string]float64
-	GoldPerMinDeltas            map[string]float64
-	XPDiffPerMinDeltas          map[string]float64
-	CreepsPerMinDeltas          map[string]float64
-	XPPerMinDeltas              map[string]float64
+	CSDiffPerMinDeltas          IntervalValues
+	GoldPerMinDeltas            IntervalValues
+	XPDiffPerMinDeltas          IntervalValues
+	CreepsPerMinDeltas          IntervalValues
+	XPPerMinDeltas              IntervalValues
 	Role                        string
-	DamageTakenDiffPerMinDeltas map[string]float64
-	DamageTakenPerMinDeltas     map[string]float64
+	DamageTakenDiffPerMinDeltas IntervalValues
+	DamageTakenPerMinDeltas     IntervalValues
 }
 
 type Mastery struct {
@@ -194,7 +244,7 @@ type Matchlist struct {
 }
 
 type MatchReference struct {
-	Lane       string
+	Lane       lane.Lane
 	GameID     int64
 	Champion   champion.Champion
 	PlatformID string
@@ -273,9 +323,30 @@ type MatchTimeline struct {
 	FrameInterval int64
 }
 
+// ParticipantFrames stores frames corresponding to each participant. The order
+// is not defined (i.e. do not assume the order is ascending by participant ID).
+type ParticipantFrames struct {
+	Frames []MatchParticipantFrame
+}
+
+func (p *ParticipantFrames) UnmarshalJSON(b []byte) error {
+	var obj map[int]MatchParticipantFrame
+	err := json.Unmarshal(b, &obj)
+	if err != nil {
+		return err
+	}
+	var vals []MatchParticipantFrame
+
+	for _, v := range obj {
+		vals = append(vals, v)
+	}
+	p.Frames = vals
+	return nil
+}
+
 type MatchFrame struct {
 	Timestamp         int64
-	ParticipantFrames map[int]MatchParticipantFrame
+	ParticipantFrames ParticipantFrames
 	Events            []MatchEvent
 }
 
@@ -314,7 +385,7 @@ type MatchEvent struct {
 	Timestamp               int64
 	AfterID                 int
 	MonsterSubType          string
-	LaneType                string
+	LaneType                lane.Type
 	ItemID                  int
 	ParticipantID           int
 	BuildingType            string

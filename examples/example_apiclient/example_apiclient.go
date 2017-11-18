@@ -95,6 +95,10 @@ func main() {
 	myMatch, err := client.GetMatch(ctx, reg, game)
 	prettyPrint(myMatch, err)
 
+	fmt.Println("GetMatchTimeline")
+	timeline, err := client.GetMatchTimeline(ctx, reg, game)
+	prettyPrint(timeline, err)
+
 	fmt.Println("GetMatchlist")
 	matchlist, err := client.GetMatchlist(ctx, reg, account, nil)
 	prettyPrint(matchlist, err)
