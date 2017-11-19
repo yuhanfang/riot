@@ -266,7 +266,7 @@ func NewSolver(champs ChampionSet, util Utility) *Solver {
 	return &Solver{
 		championPool: champs,
 		utility:      util,
-		cache:        make(map[State]Payoff),
+		cache:        NewMapCache(),
 	}
 }
 
@@ -281,7 +281,7 @@ type Solver struct {
 	// payoff with optimal selection from both sides. If Actions is a single
 	// value, then that last action was a blue ban, so the payoff is from blue's
 	// perspective with optimal selection from that point onward.
-	cache map[State]Payoff
+	cache Cache
 
 	// utility is the shared utility function used to evaluate a set of acquired
 	// champions.
@@ -307,8 +307,8 @@ func (s *Solver) redTwoActions(state State, action int, nextAction func(State) (
 func (s *Solver) twoActions(state State, action int, nextAction func(State) (Payoff, error), greater func(float64, float64) bool) (Payoff, error) {
 	fmt.Println("Solving twoActions on state:", state)
 	ns := state.Normalize()
-	cached, ok := s.cache[ns]
-	if ok {
+	cached, err := s.cache.Get(ns)
+	if err == nil {
 		cached.NextState = state.Merge(cached.NextState)
 		return cached, nil
 	}
@@ -348,7 +348,7 @@ func (s *Solver) twoActions(state State, action int, nextAction func(State) (Pay
 	if !looped {
 		return pay, errors.New("no champions could be selected")
 	}
-	s.cache[ns] = pay
+	s.cache.Put(ns, pay)
 	// Overwrite the early history, which was normalized.
 	pay.NextState = state.Merge(pay.NextState)
 	return pay, nil
@@ -359,8 +359,8 @@ func (s *Solver) twoActions(state State, action int, nextAction func(State) (Pay
 func (s *Solver) oneAction(state State, action int, nextAction func(State) (Payoff, error), greater func(float64, float64) bool) (Payoff, error) {
 	fmt.Println("Solving oneAction on state:", state)
 	ns := state.Normalize()
-	cached, ok := s.cache[ns]
-	if ok {
+	cached, err := s.cache.Get(ns)
+	if err == nil {
 		cached.NextState = state.Merge(cached.NextState)
 		return cached, nil
 	}
@@ -400,7 +400,7 @@ func (s *Solver) oneAction(state State, action int, nextAction func(State) (Payo
 	if !looped {
 		return pay, errors.New("unable to select a champion")
 	}
-	s.cache[ns] = pay
+	s.cache.Put(ns, pay)
 	// Overwrite the early history, which was normalized.
 	pay.NextState = state.Merge(pay.NextState)
 	return pay, nil
