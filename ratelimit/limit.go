@@ -30,7 +30,7 @@ func (s *singleLimit) Acquire() (ok bool) {
 	s.lock.Lock()
 	defer s.lock.Unlock()
 
-	if s.quantity == 0 {
+	if s.quantity <= 0 {
 		return false
 	}
 	s.quantity--
