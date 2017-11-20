@@ -8,19 +8,15 @@ import (
 	"net/url"
 	"strings"
 
+	"github.com/yuhanfang/riot/external"
 	"github.com/yuhanfang/riot/ratelimit"
 )
-
-// Doer executes arbitrary HTTP requests, and is usually a *http.Client.
-type Doer interface {
-	Do(*http.Request) (*http.Response, error)
-}
 
 // client implemnts the ratelimit.Limiter interface by querying a rate limit
 // server.
 type client struct {
 	base *url.URL
-	d    Doer
+	d    external.Doer
 }
 
 // Acquire acquires quota for the given invocation. The caller must call done()
@@ -103,7 +99,7 @@ func getError(res *http.Response, err error) error {
 
 // New returns a Limiter configured with the given http client (usually
 // http.DefaultClient) and base URL of the server.
-func New(doer Doer, base *url.URL) ratelimit.Limiter {
+func New(doer external.Doer, base *url.URL) ratelimit.Limiter {
 	return &client{
 		d:    doer,
 		base: base,

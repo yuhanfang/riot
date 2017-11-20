@@ -13,6 +13,7 @@ import (
 	"github.com/yuhanfang/riot/constants/champion"
 	"github.com/yuhanfang/riot/constants/queue"
 	"github.com/yuhanfang/riot/constants/region"
+	"github.com/yuhanfang/riot/external"
 	"github.com/yuhanfang/riot/ratelimit"
 )
 
@@ -93,18 +94,13 @@ type Client interface {
 // client is the internal implementation of Client.
 type client struct {
 	key string
-	c   Doer
+	c   external.Doer
 	r   ratelimit.Limiter
-}
-
-// Doer executes arbitrary HTTP requests, and is usually a *http.Client.
-type Doer interface {
-	Do(*http.Request) (*http.Response, error)
 }
 
 // New returns a Client configured for the given API client and underlying HTTP
 // client. The returned Client is threadsafe.
-func New(key string, httpClient Doer, limiter ratelimit.Limiter) Client {
+func New(key string, httpClient external.Doer, limiter ratelimit.Limiter) Client {
 	return &client{
 		key: key,
 		c:   httpClient,
