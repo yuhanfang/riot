@@ -6,12 +6,6 @@ This project includes the following:
   - Uploader to structure data in BigQuery for easy analysis. See
     `examples/example_bigquery_aggregator`
 
-In development are the following:
-  - Champion select solver. Given a utility function for evaluating a team
-    composition, solve for optimal pick/ban either as of the beginning of the
-    game, or as of any node given any current state. See
-    `analytics/champion_select/solver`
-
 If any of this is interesting and you want to help out, I'm always happy to
 chat.
 
