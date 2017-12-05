@@ -7,7 +7,8 @@ import "fmt"
 type Region string
 
 const (
-	NA1 Region = "NA1"
+	NA1   Region = "NA1"
+	TRLH1        = "TRLH1"
 )
 
 // Host returns the full hostname corresponding to the region. This function
@@ -17,6 +18,6 @@ func (r Region) Host() string {
 	case NA1:
 		return "https://na1.api.riotgames.com"
 	default:
-		panic(fmt.Sprintf("invalid region %d", r))
+		panic(fmt.Sprintf("region %d does not have a configured host", r))
 	}
 }

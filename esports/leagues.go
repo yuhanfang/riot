@@ -6,6 +6,8 @@ import (
 	"net/http"
 
 	"github.com/yuhanfang/riot/constants/language"
+	"github.com/yuhanfang/riot/constants/region"
+	"github.com/yuhanfang/riot/types"
 )
 
 type Leagues struct {
@@ -84,8 +86,8 @@ type Leagues_HighlanderTournament_Bracket_Match_Game struct {
 	// Input
 	// Standings
 	// Scores
-	GameID     string
-	GameRealm  string
+	GameID     types.StringInt64
+	GameRealm  region.Region
 	PlatformID string
 	Revision   int
 }
