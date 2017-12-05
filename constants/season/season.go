@@ -1,3 +1,4 @@
+// Package season defines season constants.
 package season
 
 type Season int

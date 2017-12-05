@@ -1,3 +1,5 @@
+// Package client implements rate limiting by connecting to a centralized rate
+// limiting server.
 package client
 
 import (

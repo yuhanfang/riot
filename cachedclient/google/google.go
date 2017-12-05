@@ -1,4 +1,7 @@
 // Package google implements GCE-based persistence for cached RPC calls.
+//
+// Use the NewDatastore() constructor to initialize a GCE-backed Datastore that
+// can be used to construct a cached client.
 package google
 
 import (

@@ -1,3 +1,7 @@
+// Package apiclient accesses the official Riot API.
+//
+// Construct a client with the New() function, and call the various client
+// methods to retrieve data from the API.
 package apiclient
 
 import (

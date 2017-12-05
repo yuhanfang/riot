@@ -1,3 +1,4 @@
+// Package event defines event constants.
 package event
 
 type Event string

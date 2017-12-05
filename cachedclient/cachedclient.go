@@ -1,3 +1,8 @@
+// Package cachedclient implements a cached version of the Riot API. The client
+// is backed by a Datastore that persists RPC results, and a Client that calls
+// to Riot in the event an RPC is not available in the Cache.
+//
+// Use the New() constructor to initialize a Client.
 package cachedclient
 
 import (

@@ -1,8 +1,7 @@
 // Package esports implements an API for interacting with lolesports.
 //
-// This package is currently unstable. Some attributes are commented out; those
-// are available in the API, but currently ignored by us. Contributions are
-// welcome!
+// Use the NewClient() constructor to construct a client, and call the client
+// methods to interact with lolesports. Rate limiting is not implemented.
 package esports
 
 import (

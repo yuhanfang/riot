@@ -1,3 +1,4 @@
+// Package queue defines queue constants.
 package queue
 
 import (

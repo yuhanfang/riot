@@ -1,3 +1,4 @@
+// Package lane defines lane constants.
 package lane
 
 type Lane string
