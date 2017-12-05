@@ -1,3 +1,4 @@
+// Package tier defines tier constants.
 package tier
 
 import (

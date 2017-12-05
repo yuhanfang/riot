@@ -1,3 +1,4 @@
+// Package region defines region constants.
 package region
 
 import "fmt"

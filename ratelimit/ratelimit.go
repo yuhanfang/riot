@@ -1,3 +1,7 @@
+// Package ratelimit implements rate limiting for the public Riot API.
+//
+// This package defines client-side rate limiting. For centralized rate
+// limiting, see the service sub-package.
 package ratelimit
 
 import (

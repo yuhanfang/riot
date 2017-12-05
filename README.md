@@ -1,3 +1,5 @@
+Documentation: https://godoc.org/github.com/yuhanfang/riot
+
 This project aims to provide a batteries-included toolkit for all publicly
 available Riot data. The main features include:
 
@@ -9,8 +11,7 @@ available Riot data. The main features include:
   - Static data client backed by data dragons. See `examples/example_staticdata`
   - Uploader to structure API data in BigQuery for easy analysis. See
     `examples/example_bigquery_aggregator`
-  - Competitive esports data API. See `examples/example_esports` (warning: this
-    API is still under heavy development, and is unstable)
+  - Competitive esports data API. See `examples/example_esports`
 
 Please see CONTRIBUTING if you are interested in contributing features or
 bugfixes.

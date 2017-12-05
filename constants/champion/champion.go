@@ -1,3 +1,4 @@
+// Package champion defines champion constants.
 package champion
 
 import "fmt"
