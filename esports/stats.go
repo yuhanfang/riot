@@ -10,6 +10,7 @@ import (
 )
 
 func (c Client) GetGameStats(ctx context.Context, region region.Region, gameID int64, gameHash string) (*apiclient.Match, error) {
+	fmt.Printf("https://acs.leagueoflegends.com/v1/stats/game/%s/%d?gameHash=%s", region, gameID, gameHash)
 	req, err := http.NewRequest("GET", fmt.Sprintf("https://acs.leagueoflegends.com/v1/stats/game/%s/%d?gameHash=%s", region, gameID, gameHash), nil)
 	if err != nil {
 		return nil, err

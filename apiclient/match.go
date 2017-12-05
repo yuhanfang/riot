@@ -201,6 +201,9 @@ type Rune struct {
 }
 
 // Interval represents a range of game time, measured in minutes.
+//
+// The value 999 is used to represent an endpoint that is coded as the literal
+// string "end"
 type Interval struct {
 	Begin int
 	End   int
@@ -221,13 +224,21 @@ func (i *IntervalValues) UnmarshalJSON(b []byte) error {
 		if len(intervals) != 2 {
 			return fmt.Errorf("unable to parse intervals: %v", intervals)
 		}
+		intervals[0] = strings.TrimSpace(intervals[0])
+		intervals[1] = strings.TrimSpace(intervals[1])
+
 		begin, err := strconv.ParseInt(intervals[0], 10, 64)
 		if err != nil {
 			return err
 		}
-		end, err := strconv.ParseInt(intervals[1], 10, 64)
-		if err != nil {
-			return err
+		var end int64
+		if intervals[1] == "end" {
+			end = 999
+		} else {
+			end, err = strconv.ParseInt(intervals[1], 10, 64)
+			if err != nil {
+				return err
+			}
 		}
 		vals = append(vals, IntervalValue{
 			Interval: Interval{
