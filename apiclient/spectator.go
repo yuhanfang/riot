@@ -42,6 +42,13 @@ type CurrentGameParticipant struct {
 	Masteries     []CurrentGameParticipantMasteryDTO // The masteries used by this participant
 	Spell1Id      int64                              // The ID of the first summoner spell used by this participant
 	SummonerId    int64                              // The summoner ID of this participant
+	Perks         Perks
+}
+
+type Perks struct {
+	PerkIDs      []int64
+	PerkStyle    int64
+	PerkSubStyle int64
 }
 
 type CurrentGameParticipantRuneDTO struct {
@@ -87,6 +94,7 @@ type FeaturedGameParticipantDTO struct {
 	Spell2Id      int64  // The ID of the second summoner spell used by this participant
 	TeamId        int64  // The team ID of this participant, indicating the participant's team
 	Spell1Id      int64  // The ID of the first summoner spell used by this participant
+	Perks         Perks
 }
 
 func (c *client) GetFeaturedGames(ctx context.Context, r region.Region) (*FeaturedGames, error) {

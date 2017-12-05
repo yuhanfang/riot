@@ -160,6 +160,39 @@ type ParticipantStats struct {
 	KillingSprees                   int
 	TimeCCingOthers                 int64
 	PhysicalDamageTaken             int64
+
+	Perk0     int64
+	Perk0Var1 int
+	Perk0Var2 int
+	Perk0Var3 int
+
+	Perk1     int64
+	Perk1Var1 int
+	Perk1Var2 int
+	Perk1Var3 int
+
+	Perk2     int64
+	Perk2Var1 int
+	Perk2Var2 int
+	Perk2Var3 int
+
+	Perk3     int64
+	Perk3Var1 int
+	Perk3Var2 int
+	Perk3Var3 int
+
+	Perk4     int64
+	Perk4Var1 int
+	Perk4Var2 int
+	Perk4Var3 int
+
+	Perk5     int64
+	Perk5Var1 int
+	Perk5Var2 int
+	Perk5Var3 int
+
+	PerkPrimaryStyle int64
+	PerkSubStyle     int64
 }
 
 type Rune struct {
