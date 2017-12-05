@@ -1,3 +1,21 @@
-Please ping me on discord!
+Thank you for your interest in contributing!
 
-https://discordapp.com/invite/8XPtaFB
+You are welcome to fork and hack away, but if you are thinking of merging your
+changes at some point, the following guidelines will make everybody's lives much
+easier:
+
+  1. Always start by creating an issue describing what you would like to
+     contribute. For bugs, describe how to reproduce the bug. For enhancements,
+     describe what you are trying to accomplish, and give a brief roadmap for
+     your implementation.
+
+  2. Follow Go style conventions. Sometimes, it makes sense to deviate; when
+     deviating, try to follow well-known Go package conventions. For example, for
+     "nested struct" names, follow generated protobuf code naming conventions.
+
+  3. Add hermetic tests whenever easy to do so. For new features, you must add
+     an end-to-end example in the examples/ folder that illustrates how to use your
+     feature.
+
+You will be required to digitally sign a CLA as part of your first pull request.
+See CLA for a reproduction of the agreement.
