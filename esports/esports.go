@@ -5,75 +5,39 @@
 // welcome!
 package esports
 
-type Leagues struct {
-	Leagues               []League
-	HighlanderTournaments []HighlanderTournament
-	HighlanderRecords     []HighlanderRecord
-	Teams                 []Team
-	// Players
+import (
+	"bytes"
+	"context"
+	"encoding/json"
+	"io/ioutil"
+	"net/http"
+
+	"github.com/yuhanfang/riot/external"
+)
+
+type Client struct {
+	d external.Doer
 }
 
-type League struct {
-	ID          int64
-	Slug        string
-	Name        string
-	GUID        string
-	Region      string
-	DrupalID    int64
-	LogoURL     string
-	CreatedAt   string // 2015-04-28T21:08:42.000Z
-	UpdatedAt   string
-	Abouts      map[constants.Language]string
-	Names       map[constants.Language]string
-	Tournaments []string
+func NewClient(doer external.Doer) *Client {
+	return &Client{
+		d: doer,
+	}
 }
 
-type HighlanderTournament struct {
-	ID              string
-	Title           string
-	Description     string
-	LeagueReference string
-	// RosteringStrategy
-	// Queues
-	// Rosters
-	Published bool
-	// Breakpoints
-	// Brackets
-	// LiveMatches
-	StartDate   string // YYYY-MM-DD
-	EndDate     string // YYYY-MM-DD
-	LeagueID    string
-	PlatformIDs []string
-	GameIDs     []string
-	League      string
-}
-
-type HighlanderRecord struct {
-	Wins       int
-	Losses     int
-	Ties       int
-	Score      int
-	Roster     string
-	Tournament string
-	Bracket    string
-	ID         string
-}
-
-type Team struct {
-	ID           int64
-	Slug         string
-	Name         string
-	GUID         string
-	TeamPhotoURL string
-	LogoURL      string
-	Acroynm      string
-	HomeLeague   string
-	AltLogoURL   string
-	CreatedAt    string // YYYY-MM-DDT18:34:47.000Z
-	UpdatedAt    string
-	Bios         map[constants.Language]string
-	// ForeignIDs
-	Players  []int64
-	Starters []int64
-	Subs     []int64
+func (c Client) doJSON(ctx context.Context, req *http.Request, dest interface{}) (*http.Response, error) {
+	res, err := c.d.Do(req.WithContext(ctx))
+	if err != nil {
+		return res, err
+	}
+	if dest == nil {
+		return res, err
+	}
+	body, err := ioutil.ReadAll(res.Body)
+	res.Body.Close()
+	res.Body = ioutil.NopCloser(bytes.NewReader(body))
+	if err != nil {
+		return res, err
+	}
+	return res, json.Unmarshal(body, dest)
 }

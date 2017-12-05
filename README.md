@@ -1,12 +1,19 @@
-This project includes the following:
+This project aims to provide a batteries-included toolkit for all publicly
+available Riot data. The main features include:
+
   - Threadsafe, rate-limited API client. See `examples/example_apiclient`
-  - Centralized rate-limiting service. See https://github.com/yuhanfang/riot/wiki/Rate-Limit-Service
-  - Cached client with a Google Cloud backend. See `examples/example_cachedclient`
+  - Centralized rate-limiting service for multi-server configurations. See
+    https://github.com/yuhanfang/riot/wiki/Rate-Limit-Service
+  - Cached client built on top of a Google Cloud backend. See
+    `examples/example_cachedclient`
   - Static data client backed by data dragons. See `examples/example_staticdata`
-  - Uploader to structure data in BigQuery for easy analysis. See
+  - Uploader to structure API data in BigQuery for easy analysis. See
     `examples/example_bigquery_aggregator`
+  - Competitive esports data API. See `examples/example_esports` (warning: this
+    API is still under heavy development, and is unstable)
 
-If any of this is interesting and you want to help out, I'm always happy to
-chat.
+Please see CONTRIBUTING if you are interested in contributing features or
+bugfixes.
 
-https://discordapp.com/invite/8XPtaFB
+Feel free to raise an issue with label "question" or DM me at
+[@iso646](https://www.twitter.com/iso646) if you have any questions.
