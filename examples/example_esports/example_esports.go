@@ -59,6 +59,9 @@ func main() {
 
 	// Note that ACS uses GameID instead of ID. This is the URL with the game
 	// stats.
-	fmt.Printf("https://acs.leagueoflegends.com/v1/stats/game/%s/%s?gameHash=%s\n", realm, match.Games[game.ID].GameID, game.GameHash)
-	fmt.Println(err)
+	stats, err := client.GetGameStats(ctx, realm, match.Games[game.ID].GameID.Int64(), game.GameHash)
+	prettyPrint(stats, err)
+
+	timeline, err := client.GetGameTimeline(ctx, realm, match.Games[game.ID].GameID.Int64(), game.GameHash)
+	prettyPrint(timeline, err)
 }

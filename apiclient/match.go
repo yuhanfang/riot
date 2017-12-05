@@ -15,6 +15,7 @@ import (
 	"github.com/yuhanfang/riot/constants/queue"
 	"github.com/yuhanfang/riot/constants/region"
 	"github.com/yuhanfang/riot/constants/season"
+	"github.com/yuhanfang/riot/types"
 )
 
 type Match struct {
@@ -29,8 +30,8 @@ type Match struct {
 	GameType              string
 	Teams                 []TeamStats
 	Participants          []Participant
-	GameDuration          Milliseconds
-	GameCreation          Milliseconds
+	GameDuration          types.Milliseconds
+	GameCreation          types.Milliseconds
 }
 
 type ParticipantIdentity struct {
@@ -251,7 +252,7 @@ type MatchReference struct {
 	Season     season.Season
 	Queue      queue.Queue
 	Role       string
-	Timestamp  Milliseconds
+	Timestamp  types.Milliseconds
 }
 
 // GetMatchlistOptions provides filtering options for GetMatchlist. The zero
@@ -320,7 +321,7 @@ func (c *client) GetRecentMatchlist(ctx context.Context, r region.Region, accoun
 
 type MatchTimeline struct {
 	Frames        []MatchFrame
-	FrameInterval Milliseconds
+	FrameInterval types.Milliseconds
 }
 
 // ParticipantFrames stores frames corresponding to each participant. The order
@@ -345,7 +346,7 @@ func (p *ParticipantFrames) UnmarshalJSON(b []byte) error {
 }
 
 type MatchFrame struct {
-	Timestamp         Milliseconds
+	Timestamp         types.Milliseconds
 	ParticipantFrames ParticipantFrames
 	Events            []MatchEvent
 }
@@ -382,7 +383,7 @@ type MatchEvent struct {
 	Type                    event.Event
 	SkillSlot               int
 	VictimID                int
-	Timestamp               Milliseconds
+	Timestamp               types.Milliseconds
 	AfterID                 int
 	MonsterSubType          string
 	LaneType                lane.Type
