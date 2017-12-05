@@ -3,6 +3,7 @@ package types
 import (
 	"encoding/json"
 	"strconv"
+	"strings"
 )
 
 // StringInt64 is a JSON string that represents an int64 value.
@@ -14,7 +15,7 @@ func (s *StringInt64) UnmarshalJSON(b []byte) error {
 	if err != nil {
 		return err
 	}
-	intval, err := strconv.ParseInt(str, 10, 64)
+	intval, err := strconv.ParseInt(strings.TrimSpace(str), 10, 64)
 	if err != nil {
 		return err
 	}

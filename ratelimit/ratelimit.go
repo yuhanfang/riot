@@ -292,12 +292,12 @@ func (l *limiter) Acquire(ctx context.Context, inv Invocation) (Done, Cancel, er
 		})
 
 		if res != nil {
-			appLimit := res.Header.Get("X-App-Rate-Limit")
-			appCount := res.Header.Get("X-App-Rate-Limit-Count")
-			methodLimit := res.Header.Get("X-Method-Rate-Limit")
-			methodCount := res.Header.Get("X-Method-Rate-Limit-Count")
-			retryAfter := res.Header.Get("Retry-After")
-			retryType := res.Header.Get("X-Rate-Limit-Type")
+			appLimit := strings.TrimSpace(res.Header.Get("X-App-Rate-Limit"))
+			appCount := strings.TrimSpace(res.Header.Get("X-App-Rate-Limit-Count"))
+			methodLimit := strings.TrimSpace(res.Header.Get("X-Method-Rate-Limit"))
+			methodCount := strings.TrimSpace(res.Header.Get("X-Method-Rate-Limit-Count"))
+			retryAfter := strings.TrimSpace(res.Header.Get("Retry-After"))
+			retryType := strings.TrimSpace(res.Header.Get("X-Rate-Limit-Type"))
 
 			appKey := inv.App()
 
