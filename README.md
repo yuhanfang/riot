@@ -18,3 +18,6 @@ bugfixes.
 
 Feel free to raise an issue with label "question" or DM me at
 [@iso646](https://www.twitter.com/iso646) if you have any questions.
+
+[![Build
+Status](https://travis-ci.org/yuhanfang/riot.svg?branch=master)](https://travis-ci.org/yuhanfang/riot)
