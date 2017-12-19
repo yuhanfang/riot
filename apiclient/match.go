@@ -85,6 +85,13 @@ type Participant struct {
 	HighestAchievedSeasonTier string
 	Spell1ID                  int
 	ChampionID                champion.Champion
+	Perks                     Perks
+}
+
+type Perks struct {
+	PerkIDs      []int64 // TODO: replace with Perk type
+	PerkStyle    int64
+	PerkSubStyle int64
 }
 
 type ParticipantStats struct {
