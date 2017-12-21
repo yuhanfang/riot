@@ -7,11 +7,16 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"time"
 
 	"cloud.google.com/go/bigquery"
 	"cloud.google.com/go/datastore"
+	"github.com/yuhanfang/riot/analytics/data_aggregation"
 	"github.com/yuhanfang/riot/analytics/data_aggregation/bigquery_aggregator"
 	"github.com/yuhanfang/riot/apiclient"
+	"github.com/yuhanfang/riot/cachedclient"
+	"github.com/yuhanfang/riot/cachedclient/google"
+	"github.com/yuhanfang/riot/constants/queue"
 	"github.com/yuhanfang/riot/constants/region"
 	"github.com/yuhanfang/riot/ratelimit"
 )
@@ -30,22 +35,20 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	agg := bigquery_aggregator.New("TestAggregator", ds, bq)
+	ba := bigquery_aggregator.New("TestAggregator", "TestAggregatorDataset", "matches", ds, bq)
+
 	limiter := ratelimit.NewLimiter()
 	httpClient := http.DefaultClient
-	client := apiclient.New(key, httpClient, limiter)
-
-	match, err := client.GetMatch(ctx, region.NA1, game)
+	underlying := apiclient.New(key, httpClient, limiter)
+	cache, err := google.NewDatastore(ctx, project, "TestAggregatorCache")
 	if err != nil {
 		log.Fatal(err)
 	}
-	ok, err := agg.SaveMatch(ctx, "TestAggregatorDataset", "matches", region.NA1, match)
+	client := cachedclient.New(underlying, cache)
+	agg := data_aggregation.NewAggregator(client, ba)
+	err = agg.AggregateChallengerLeagueMatches(ctx, region.NA1, queue.RankedSolo5x5, time.Now().Add(-10*time.Minute))
 	if err != nil {
 		log.Fatal(err)
 	}
-	if ok {
-		log.Println("match stored successfully")
-	} else {
-		log.Println("match already exists")
-	}
+	log.Print("saved challenger matches")
 }

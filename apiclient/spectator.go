@@ -8,17 +8,17 @@ import (
 )
 
 type CurrentGameInfo struct {
-	GameID            int64                    // The ID of the game
-	GameStartTime     int64                    // The game start time represented in epoch milliseconds
-	PlatformID        string                   // The ID of the platform on which the game is being played
-	GameMode          string                   // The game mode
-	MapID             int64                    // The ID of the map
-	GameType          string                   // The game type
-	BannedChampions   []BannedChampion         // Banned champion information
-	Observers         Observer                 // The observer information
-	Participants      []CurrentGameParticipant // The participant information
-	GameLength        int64                    // The amount of time in seconds that has passed since the game started
-	GameQueueConfigID int64                    // The queue type (queue types are documented on the Game Constants page)
+	GameID            int64                    `datastore:",noindex"` // The ID of the game
+	GameStartTime     int64                    `datastore:",noindex"` // The game start time represented in epoch milliseconds
+	PlatformID        string                   `datastore:",noindex"` // The ID of the platform on which the game is being played
+	GameMode          string                   `datastore:",noindex"` // The game mode
+	MapID             int64                    `datastore:",noindex"` // The ID of the map
+	GameType          string                   `datastore:",noindex"` // The game type
+	BannedChampions   []BannedChampion         `datastore:",noindex"` // Banned champion information
+	Observers         Observer                 `datastore:",noindex"` // The observer information
+	Participants      []CurrentGameParticipant `datastore:",noindex"` // The participant information
+	GameLength        int64                    `datastore:",noindex"` // The amount of time in seconds that has passed since the game started
+	GameQueueConfigID int64                    `datastore:",noindex"` // The queue type (queue types are documented on the Game Constants page)
 }
 
 type BannedChampion struct {
@@ -68,8 +68,8 @@ func (c *client) GetCurrentGameInfoBySummoner(ctx context.Context, r region.Regi
 }
 
 type FeaturedGames struct {
-	ClientRefreshInterval int64                 // The suggested interval to wait before requesting FeaturedGames again
-	GameList              []FeaturedGameInfoDTO // 	The list of featured games
+	ClientRefreshInterval int64                 `datastore:",noindex"` // The suggested interval to wait before requesting FeaturedGames again
+	GameList              []FeaturedGameInfoDTO `datastore:",noindex"` // 	The list of featured games
 }
 
 type FeaturedGameInfoDTO struct {

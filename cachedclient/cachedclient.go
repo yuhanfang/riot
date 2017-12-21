@@ -55,7 +55,7 @@ func (c *client) GetChampions(ctx context.Context, r region.Region) (*apiclient.
 	if err != nil {
 		return nil, err
 	}
-	err = c.d.Put(ctx, key, res, zeroTime)
+	err = c.d.Put(ctx, key, res, time.Now())
 	go c.d.Purge(ctx, key, 1)
 	return res, err
 }
@@ -71,7 +71,7 @@ func (c *client) GetChampionsByID(ctx context.Context, r region.Region, champ ch
 	if err != nil {
 		return nil, err
 	}
-	err = c.d.Put(ctx, key, res, zeroTime)
+	err = c.d.Put(ctx, key, res, time.Now())
 	go c.d.Purge(ctx, key, 1)
 	return res, err
 }
@@ -113,7 +113,7 @@ func (c *client) GetAllLeaguePositionsForSummoner(ctx context.Context, r region.
 	var val LeaguePositions
 	key := fmt.Sprintf("get-all-league-positions-for-summoner:%s:%d", r, summonerID)
 	t, err := c.d.Get(ctx, key, &val, time.Now())
-	if err == nil && time.Since(t) < 1*time.Hour {
+	if err == nil && time.Since(t) < 24*time.Hour {
 		return val.Positions, nil
 	}
 	res, err := c.Client.GetAllLeaguePositionsForSummoner(ctx, r, summonerID)
@@ -141,33 +141,11 @@ func (c *client) GetLeagueByID(ctx context.Context, r region.Region, leagueID st
 }
 
 func (c *client) GetMatch(ctx context.Context, r region.Region, matchID int64) (*apiclient.Match, error) {
-	var val apiclient.Match
-	key := fmt.Sprintf("get-match:%s:%d", r, matchID)
-	_, err := c.d.Get(ctx, key, &val, zeroTime)
-	if err == nil {
-		return &val, nil
-	}
-	res, err := c.Client.GetMatch(ctx, r, matchID)
-	if err != nil {
-		return nil, err
-	}
-	err = c.d.Put(ctx, key, res, zeroTime)
-	return res, err
+	return c.Client.GetMatch(ctx, r, matchID)
 }
 
 func (c *client) GetMatchTimeline(ctx context.Context, r region.Region, matchID int64) (*apiclient.MatchTimeline, error) {
-	var val apiclient.MatchTimeline
-	key := fmt.Sprintf("get-match-timeline:%s:%d", r, matchID)
-	_, err := c.d.Get(ctx, key, &val, zeroTime)
-	if err == nil {
-		return &val, nil
-	}
-	res, err := c.Client.GetMatchTimeline(ctx, r, matchID)
-	if err != nil {
-		return nil, err
-	}
-	err = c.d.Put(ctx, key, res, zeroTime)
-	return res, err
+	return c.Client.GetMatchTimeline(ctx, r, matchID)
 }
 
 // filterMatchlist applies the given options to the matchlist, returning a new
@@ -243,7 +221,7 @@ func (c *client) GetMatchlist(ctx context.Context, r region.Region, accountID in
 	var val apiclient.Matchlist
 	key := fmt.Sprintf("get-matchlist:%s:%d", r, accountID)
 	t, err := c.d.Get(ctx, key, &val, time.Now())
-	if err == nil && time.Since(t) < 1*time.Hour {
+	if err == nil && time.Since(t) < 24*time.Hour {
 		return filterMatchlist(&val, opt), nil
 	}
 	res, err := c.Client.GetMatchlist(ctx, r, accountID, nil)

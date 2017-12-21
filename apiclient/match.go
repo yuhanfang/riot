@@ -19,19 +19,19 @@ import (
 )
 
 type Match struct {
-	SeasonID              season.Season
-	QueueID               queue.Queue
-	GameID                int64
-	ParticipantIdentities []ParticipantIdentity
-	GameVersion           string
-	PlatformID            string
-	GameMode              string
-	MapID                 int
-	GameType              string
-	Teams                 []TeamStats
-	Participants          []Participant
-	GameDuration          types.Milliseconds
-	GameCreation          types.Milliseconds
+	SeasonID              season.Season         `datastore:",noindex"`
+	QueueID               queue.Queue           `datastore:",noindex"`
+	GameID                int64                 `datastore:",noindex"`
+	ParticipantIdentities []ParticipantIdentity `datastore:",noindex"`
+	GameVersion           string                `datastore:",noindex"`
+	PlatformID            string                `datastore:",noindex"`
+	GameMode              string                `datastore:",noindex"`
+	MapID                 int                   `datastore:",noindex"`
+	GameType              string                `datastore:",noindex"`
+	Teams                 []TeamStats           `datastore:",noindex"`
+	Participants          []Participant         `datastore:",noindex"`
+	GameDuration          types.Milliseconds    `datastore:",noindex"`
+	GameCreation          types.Milliseconds    `datastore:",noindex"`
 }
 
 type ParticipantIdentity struct {
@@ -282,10 +282,10 @@ func (c *client) GetMatch(ctx context.Context, r region.Region, matchID int64) (
 }
 
 type Matchlist struct {
-	Matches    []MatchReference
-	TotalGames int
-	StartIndex int
-	EndIndex   int
+	Matches    []MatchReference `datastore:",noindex"`
+	TotalGames int              `datastore:",noindex"`
+	StartIndex int              `datastore:",noindex"`
+	EndIndex   int              `datastore:",noindex"`
 }
 
 type MatchReference struct {
@@ -364,8 +364,8 @@ func (c *client) GetRecentMatchlist(ctx context.Context, r region.Region, accoun
 }
 
 type MatchTimeline struct {
-	Frames        []MatchFrame
-	FrameInterval types.Milliseconds
+	Frames        []MatchFrame       `datastore:",noindex"`
+	FrameInterval types.Milliseconds `datastore:",noindex"`
 }
 
 // ParticipantFrames stores frames corresponding to each participant. The order

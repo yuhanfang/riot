@@ -8,12 +8,12 @@ import (
 )
 
 type Summoner struct {
-	ProfileIconID int    // ID of the summoner icon associated with the summoner.
-	Name          string //Summoner name.
-	SummonerLevel int64  // Summoner level associated with the summoner.
-	RevisionDate  int64  // Date summoner was last modified specified as epoch milliseconds. The following events will update this timestamp: profile icon change, playing the tutorial or advanced tutorial, finishing a game, summoner name change
-	ID            int64  // Summoner ID.
-	AccountID     int64  //Account ID.
+	ProfileIconID int    `datastore:",noindex"` // ID of the summoner icon associated with the summoner.
+	Name          string `datastore:",noindex"` //Summoner name.
+	SummonerLevel int64  `datastore:",noindex"` // Summoner level associated with the summoner.
+	RevisionDate  int64  `datastore:",noindex"` // Date summoner was last modified specified as epoch milliseconds. The following events will update this timestamp: profile icon change, playing the tutorial or advanced tutorial, finishing a game, summoner name change
+	ID            int64  `datastore:",noindex"` // Summoner ID.
+	AccountID     int64  `datastore:",noindex"` //Account ID.
 }
 
 func (c *client) GetByAccountID(ctx context.Context, r region.Region, accountID int64) (*Summoner, error) {
