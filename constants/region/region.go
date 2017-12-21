@@ -10,6 +10,7 @@ type Region string
 const (
 	NA1   Region = "NA1"
 	TRLH1        = "TRLH1"
+	KR           = "KR"
 )
 
 // Host returns the full hostname corresponding to the region. This function
@@ -18,6 +19,8 @@ func (r Region) Host() string {
 	switch r {
 	case NA1:
 		return "https://na1.api.riotgames.com"
+	case KR:
+		return "https://kr.api.riotgames.com"
 	default:
 		panic(fmt.Sprintf("region %d does not have a configured host", r))
 	}
