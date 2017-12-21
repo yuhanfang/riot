@@ -9,16 +9,16 @@ import (
 )
 
 type ChampionList struct {
-	champions []Champion // The collection of champion information.
+	champions []Champion `datastore:",noindex"` // The collection of champion information.
 }
 
 type Champion struct {
-	RankedPlayEnabled bool  // Ranked play enabled flag.
-	BotEnabled        bool  // Bot enabled flag (for custom games).
-	BotMmEnabled      bool  // Bot Match Made enabled flag (for Co-op vs. AI games).
-	Active            bool  // Indicates if the champion is active.
-	FreeToPlay        bool  // Indicates if the champion is free to play. Free to play champions are rotated periodically.
-	ID                int64 // Champion ID. For static information correlating to champion IDs, please refer to the LoL Static Data API.
+	RankedPlayEnabled bool  `datastore:",noindex"` // Ranked play enabled flag.
+	BotEnabled        bool  `datastore:",noindex"` // Bot enabled flag (for custom games).
+	BotMmEnabled      bool  `datastore:",noindex"` // Bot Match Made enabled flag (for Co-op vs. AI games).
+	Active            bool  `datastore:",noindex"` // Indicates if the champion is active.
+	FreeToPlay        bool  `datastore:",noindex"` // Indicates if the champion is free to play. Free to play champions are rotated periodically.
+	ID                int64 `datastore:",noindex"` // Champion ID. For static information correlating to champion IDs, please refer to the LoL Static Data API.
 }
 
 func (c *client) GetChampions(ctx context.Context, r region.Region) (*ChampionList, error) {

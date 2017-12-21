@@ -10,11 +10,11 @@ import (
 )
 
 type LeagueList struct {
-	LeagueID string
-	Tier     tier.Tier
-	Entries  []LeagueItem
-	Queue    queue.Queue
-	Name     string
+	LeagueID string       `datastore:",noindex"`
+	Tier     tier.Tier    `datastore:",noindex"`
+	Entries  []LeagueItem `datastore:",noindex"`
+	Queue    queue.Queue  `datastore:",noindex"`
+	Name     string       `datastore:",noindex"`
 }
 
 type LeagueItem struct {
@@ -39,19 +39,19 @@ type MiniSeries struct {
 }
 
 type LeaguePosition struct {
-	Rank             string
-	HotStreak        bool
-	MiniSeries       MiniSeries
-	Wins             int
-	Veteran          bool
-	Losses           int
-	FreshBlood       bool
-	PlayerOrTeamName string
-	Inactive         bool
-	PlayerOrTeamID   string
-	LeagueID         string
-	Tier             tier.Tier
-	LeaguePoints     int
+	Rank             string     `datastore:",noindex"`
+	HotStreak        bool       `datastore:",noindex"`
+	MiniSeries       MiniSeries `datastore:",noindex"`
+	Wins             int        `datastore:",noindex"`
+	Veteran          bool       `datastore:",noindex"`
+	Losses           int        `datastore:",noindex"`
+	FreshBlood       bool       `datastore:",noindex"`
+	PlayerOrTeamName string     `datastore:",noindex"`
+	Inactive         bool       `datastore:",noindex"`
+	PlayerOrTeamID   string     `datastore:",noindex"`
+	LeagueID         string     `datastore:",noindex"`
+	Tier             tier.Tier  `datastore:",noindex"`
+	LeaguePoints     int        `datastore:",noindex"`
 }
 
 func (c *client) GetChallengerLeague(ctx context.Context, r region.Region, q queue.Queue) (*LeagueList, error) {
