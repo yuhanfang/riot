@@ -8,6 +8,7 @@ package bigquery_aggregator
 import (
 	"context"
 	"fmt"
+	"sync"
 
 	"cloud.google.com/go/bigquery"
 	"cloud.google.com/go/datastore"
@@ -24,6 +25,8 @@ type Aggregator struct {
 	table   string
 	ds      *datastore.Client
 	bq      *bigquery.Client
+	init    *sync.Once
+	tab     *bigquery.Table
 }
 
 // New returns an aggregator configured with the given namespace and datastore
@@ -36,6 +39,7 @@ func New(namespace, dataset, table string, ds *datastore.Client, bq *bigquery.Cl
 		table:   table,
 		ds:      ds,
 		bq:      bq,
+		init:    &sync.Once{},
 	}
 }
 
@@ -223,15 +227,17 @@ type uploadKeyValue struct {
 // function stored the match. If not, and there was no error, then the match
 // was already cached.
 func (a *Aggregator) SaveMatches(ctx context.Context, matches []data_aggregation.Match) error {
-	ds := a.bq.Dataset(a.dataset)
-	ds.Create(ctx, nil)
-	tab := ds.Table(a.table)
+	a.init.Do(func() {
+		ds := a.bq.Dataset(a.dataset)
+		ds.Create(ctx, nil)
+		a.tab = ds.Table(a.table)
+	})
 	schema, err := bigquery.InferSchema(data_aggregation.Match{})
 	if err != nil {
 		return err
 	}
-	tab.Create(ctx, &bigquery.TableMetadata{Schema: schema})
-	u := tab.Uploader()
+	a.tab.Create(ctx, &bigquery.TableMetadata{Schema: schema})
+	u := a.tab.Uploader()
 
 	var (
 		acquired   = make(map[*datastore.Key]string)
