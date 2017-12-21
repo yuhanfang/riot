@@ -21,8 +21,6 @@ import (
 	"github.com/yuhanfang/riot/ratelimit"
 )
 
-const game = 2644987649
-
 func main() {
 	project := os.Getenv("GOOGLE_CLOUD_PROJECT")
 	key := os.Getenv("RIOT_APIKEY")
