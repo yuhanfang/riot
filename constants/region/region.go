@@ -22,6 +22,6 @@ func (r Region) Host() string {
 	case KR:
 		return "https://kr.api.riotgames.com"
 	default:
-		panic(fmt.Sprintf("region %d does not have a configured host", r))
+		panic(fmt.Sprintf("region %s does not have a configured host", r))
 	}
 }
