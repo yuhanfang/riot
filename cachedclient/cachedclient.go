@@ -189,6 +189,10 @@ func filterMatchlist(m *apiclient.Matchlist, opts *apiclient.GetMatchlistOptions
 			if opts.EndTime.Before(ts) {
 				continue
 			}
+		} else if opts.BeginTime != nil {
+			if opts.BeginTime.After(ts) {
+				continue
+			}
 		}
 
 		if opts.BeginIndex == nil && opts.EndIndex != nil {
