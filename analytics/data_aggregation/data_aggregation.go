@@ -4,6 +4,7 @@ package data_aggregation
 
 import (
 	"context"
+	"log"
 	"strconv"
 	"sync"
 	"time"
@@ -97,6 +98,9 @@ func (a Aggregator) getMatchIDsForAccounts(ctx context.Context, r region.Region,
 					go func() {
 						defer subwg.Done()
 						exists, err := a.sink.MatchExists(ctx, r, m.GameID)
+						if err != nil {
+							log.Printf("MatchExists failed for region %s game %d: %v", r, m.GameID, err)
+						}
 						if err == nil && !exists {
 							select {
 							case matchIDs <- m.GameID:
@@ -116,6 +120,8 @@ func (a Aggregator) getMatchIDsForAccounts(ctx context.Context, r region.Region,
 					case <-subdone:
 					}
 				}
+			} else {
+				log.Printf("GetMatchlist failed for region %s account %d: %v", r, account, err)
 			}
 		}()
 	}
@@ -146,10 +152,12 @@ func (a Aggregator) uploadMatches(ctx context.Context, r region.Region, matches 
 	for m := range matches {
 		match, err := a.client.GetMatch(ctx, r, m)
 		if err != nil && err != apiclient.ErrDataNotFound {
+			log.Printf("GetMatch failed for region %s game %d: %v", r, m, err)
 			continue
 		}
 		timeline, err := a.client.GetMatchTimeline(ctx, r, m)
 		if err != nil && err != apiclient.ErrDataNotFound {
+			log.Printf("GetMatchTimeline failed for region %s game %d: %v", r, m, err)
 			continue
 		}
 		upload := Match{
@@ -161,7 +169,10 @@ func (a Aggregator) uploadMatches(ctx context.Context, r region.Region, matches 
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
-			a.sink.SaveMatches(ctx, []Match{upload})
+			err := a.sink.SaveMatches(ctx, []Match{upload})
+			if err != nil {
+				log.Printf("SaveMatches failed for region %s game %d: %v", upload.Region, upload.ID, err)
+			}
 		}()
 	}
 	done := make(chan bool)
@@ -188,10 +199,12 @@ func (a Aggregator) getAccountIDsInLeague(ctx context.Context, r region.Region, 
 			defer wg.Done()
 			parsed, err := strconv.ParseInt(entry.PlayerOrTeamID, 10, 64)
 			if err != nil {
+				log.Printf("ParseInt failed for region %s player %s in league %s: %v", r, entry.PlayerOrTeamID, league.LeagueID, err)
 				return
 			}
 			summoner, err := a.client.GetBySummonerID(ctx, r, parsed)
 			if err != nil {
+				log.Printf("GetBySummonerID failed for region %s summoner %d: %v", r, parsed, err)
 				return
 			}
 			select {
