@@ -42,6 +42,23 @@ const (
 	RU = "RU"
 )
 
+// All returns all supported regions.
+func All() []Region {
+	return []Region{
+		BR1,
+		EUN1,
+		EUW1,
+		JP1,
+		KR,
+		LA1,
+		LA2,
+		NA1,
+		OC1,
+		TR1,
+		RU,
+	}
+}
+
 // Host returns the full hostname corresponding to the region. This function
 // panics if an invalid region is used.
 func (r Region) Host() string {
