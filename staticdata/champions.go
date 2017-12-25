@@ -69,7 +69,7 @@ type ChampionStats struct {
 type ChampionSkin struct {
 	Num  int
 	Name string
-	Id   int
+	Id   string
 }
 
 type ChampionPassive struct {
@@ -97,7 +97,7 @@ type ChampionBlock struct {
 
 type ChampionBlockItem struct {
 	Count int
-	Id    int
+	Id    string
 }
 
 // RangeOrSelf represents either an ability that targets self, or an ability
@@ -168,7 +168,7 @@ type SpellVars struct {
 	RanksWith string
 	Dyn       string
 	Link      string
-	Coeff     []float64
+	Coeff     float64
 	Key       string
 }
 
