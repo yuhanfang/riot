@@ -136,7 +136,7 @@ type ChampionSpell struct {
 	Image                Image
 	SanitizedDescription string
 	SanitizedTooltip     string
-	Effect               [][]float64
+	Effect               []SpellEffect
 	Tooltip              string
 	Maxrank              int
 	CostBurn             string
@@ -149,6 +149,14 @@ type ChampionSpell struct {
 	EffectBurn           []string
 	Altimages            []Image
 	Name                 string
+}
+
+type SpellEffect struct {
+	Details []float64
+}
+
+func (s *SpellEffect) UnmarshalJSON(b []byte) error {
+	return json.Unmarshal(b, &s.Details)
 }
 
 type SpellLevelTip struct {
