@@ -69,7 +69,7 @@ type ChampionStats struct {
 type ChampionSkin struct {
 	Num  int
 	Name string
-	Id   int
+	Id   string
 }
 
 type ChampionPassive struct {
@@ -97,7 +97,7 @@ type ChampionBlock struct {
 
 type ChampionBlockItem struct {
 	Count int
-	Id    int
+	Id    string
 }
 
 // RangeOrSelf represents either an ability that targets self, or an ability
@@ -136,7 +136,7 @@ type ChampionSpell struct {
 	Image                Image
 	SanitizedDescription string
 	SanitizedTooltip     string
-	Effect               [][]float64
+	Effect               []SpellEffect
 	Tooltip              string
 	Maxrank              int
 	CostBurn             string
@@ -151,6 +151,14 @@ type ChampionSpell struct {
 	Name                 string
 }
 
+type SpellEffect struct {
+	Details []float64
+}
+
+func (s *SpellEffect) UnmarshalJSON(b []byte) error {
+	return json.Unmarshal(b, &s.Details)
+}
+
 type SpellLevelTip struct {
 	Effect []string
 	Label  []string
@@ -160,7 +168,7 @@ type SpellVars struct {
 	RanksWith string
 	Dyn       string
 	Link      string
-	Coeff     []float64
+	Coeff     float64
 	Key       string
 }
 
