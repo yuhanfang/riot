@@ -22,7 +22,7 @@ var (
 	// in time until terminalTime. In principle, we could store values descending
 	// in time to get the most recent observation, but this requires additional
 	// index configuration.
-	terminalTime = time.Date(2500, time.December, 0, 0, 0, 0, 0, time.UTC)
+	terminalTime = time.Date(2300, time.December, 0, 0, 0, 0, 0, time.UTC)
 )
 
 type googleDatastore struct {
