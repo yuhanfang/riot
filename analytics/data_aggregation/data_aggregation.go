@@ -63,12 +63,12 @@ func (a Aggregator) AggregateChallengerLeagueMatches(ctx context.Context, r regi
 		return err
 	}
 	accountIDs := a.getAccountIDsInLeague(ctx, r, league)
-	matches := a.getMatchIDsForAccounts(ctx, r, q, since, accountIDs)
-	a.uploadMatches(ctx, r, matches)
+	matches := a.GetMatchIDsForAccounts(ctx, r, q, since, accountIDs)
+	a.UploadMatches(ctx, r, matches)
 	return nil
 }
 
-func (a Aggregator) getMatchIDsForAccounts(ctx context.Context, r region.Region, q queue.Queue, since time.Time, accountIDs []int64) map[int64]struct{} {
+func (a Aggregator) GetMatchIDsForAccounts(ctx context.Context, r region.Region, q queue.Queue, since time.Time, accountIDs []int64) map[int64]struct{} {
 	// Query recent matches for each account.
 	opts := apiclient.GetMatchlistOptions{
 		Queue:     []queue.Queue{q},
@@ -146,7 +146,7 @@ func (a Aggregator) getMatchIDsForAccounts(ctx context.Context, r region.Region,
 	return matches
 }
 
-func (a Aggregator) uploadMatches(ctx context.Context, r region.Region, matches map[int64]struct{}) {
+func (a Aggregator) UploadMatches(ctx context.Context, r region.Region, matches map[int64]struct{}) {
 	// Retrieve match and timeline data for each match.
 	wg := sync.WaitGroup{}
 	for m := range matches {
