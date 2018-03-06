@@ -7,6 +7,7 @@ import (
 	"net/http"
 
 	"github.com/yuhanfang/riot/esports"
+	"github.com/yuhanfang/riot/esports/league"
 )
 
 func main() {
@@ -15,7 +16,7 @@ func main() {
 		client := esports.NewClient(http.DefaultClient)
 
 		// Select a tournament, and pick a match in that tournament.
-		leagues, err := client.GetLeagues(ctx, esports.League(int64(i)))
+		leagues, err := client.GetLeagues(ctx, league.League(int64(i)))
 		fmt.Println(err)
 		if len(leagues.Leagues) > 0 {
 			fmt.Println(leagues.Leagues[0].ID)
