@@ -4,12 +4,14 @@ import (
 	"context"
 	"fmt"
 	"net/http"
+
+	"github.com/yuhanfang/riot/esports/league"
 )
 
 func ExampleGameDetailsEndToEnd() {
 	ctx := context.Background()
 	c := NewClient(http.DefaultClient)
-	leagues, err := c.GetLeagues(ctx, LeagueNALCS)
+	leagues, err := c.GetLeagues(ctx, league.LeagueNALCS)
 	if err != nil {
 		panic(err)
 	}
