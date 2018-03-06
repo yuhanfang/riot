@@ -7,6 +7,7 @@ import (
 
 	"github.com/yuhanfang/riot/constants/language"
 	"github.com/yuhanfang/riot/constants/region"
+	"github.com/yuhanfang/riot/esports/league"
 	"github.com/yuhanfang/riot/types"
 )
 
@@ -122,94 +123,7 @@ type Leagues_Team struct {
 	Subs     []int64
 }
 
-// League represents an esports league supported by the API.
-type League int64
-
-const (
-	LeagueAllStar               League = 1
-	LeagueNALCS                        = 2
-	LeagueEULCS                        = 3
-	LeagueNACS                         = 4
-	LeagueEUCS                         = 5
-	LeagueLCK                          = 6
-	LeagueLPL                          = 7
-	LeagueLMS                          = 8
-	LeagueWorlds                       = 9
-	LeagueMidSeasonInvitational        = 10
-	LeagueInternationalWildcard        = 12
-	LeagueOPL                          = 13
-	LeagueCBLOL                        = 14
-)
-
-// Slug returns a short string identifier for the league.
-func (l League) Slug() string {
-	switch l {
-	case LeagueAllStar:
-		return "all-star"
-	case LeagueNALCS:
-		return "na-lcs"
-	case LeagueEULCS:
-		return "eu-lcs"
-	case LeagueNACS:
-		return "na-cs"
-	case LeagueEUCS:
-		return "eu-cs"
-	case LeagueLCK:
-		return "lck"
-	case LeagueLPL:
-		return "lpl-china"
-	case LeagueLMS:
-		return "lms"
-	case LeagueWorlds:
-		return "worlds"
-	case LeagueMidSeasonInvitational:
-		return "msi"
-	case LeagueInternationalWildcard:
-		return "iwc"
-	case LeagueOPL:
-		return "oce-opl"
-	case LeagueCBLOL:
-		return "cblol-brazil"
-	default:
-		panic(fmt.Sprintf("unsupported league %d", l))
-	}
-}
-
-// String returns a canonical name for the league.
-func (l League) String() string {
-	switch l {
-	case LeagueAllStar:
-		return "All-Star"
-	case LeagueNALCS:
-		return "NA LCS"
-	case LeagueEULCS:
-		return "EU LCS"
-	case LeagueNACS:
-		return "NA Challenger Series"
-	case LeagueEUCS:
-		return "EU Challenger Series"
-	case LeagueLCK:
-		return "LCK - Champions Korea"
-	case LeagueLPL:
-		return "LPL China"
-	case LeagueLMS:
-		return "LMS Taiwan"
-	case LeagueWorlds:
-		return "World Championship"
-	case LeagueMidSeasonInvitational:
-		return "Mid-Season Invitational"
-	case LeagueInternationalWildcard:
-		return "International Wildcard"
-	case LeagueOPL:
-		return "OPL"
-	case LeagueCBLOL:
-		return "CBLOL Brazil"
-	default:
-		panic(fmt.Sprintf("unsupported league %d", l))
-	}
-}
-
-func (c Client) GetLeagues(ctx context.Context, id League) (*Leagues, error) {
+func (c Client) GetLeagues(ctx context.Context, id league.League) (*Leagues, error) {
 	req, err := http.NewRequest("GET", fmt.Sprintf("https://api.lolesports.com/api/v1/leagues?id=%d", id), nil)
 	if err != nil {
 		return nil, err
