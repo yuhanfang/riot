@@ -11,6 +11,7 @@ import (
 	"net/http"
 
 	"github.com/yuhanfang/riot/esports"
+	"github.com/yuhanfang/riot/esports/league"
 )
 
 func prettyPrint(res interface{}, err error) {
@@ -31,7 +32,7 @@ func main() {
 	client := esports.NewClient(http.DefaultClient)
 
 	// Select a tournament, and pick a match in that tournament.
-	leagues, err := client.GetLeagues(ctx, esports.LeagueWorlds)
+	leagues, err := client.GetLeagues(ctx, league.LeagueWorlds)
 	tournament := leagues.HighlanderTournaments[0].ID
 	var bracket esports.Leagues_HighlanderTournament_Bracket
 	for _, b := range leagues.HighlanderTournaments[0].Brackets {
