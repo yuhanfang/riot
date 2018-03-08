@@ -9,19 +9,29 @@ import (
 	"context"
 	"encoding/json"
 	"io/ioutil"
+	"log"
 	"net/http"
 
 	"github.com/yuhanfang/riot/external"
 )
 
 type Client struct {
-	d external.Doer
+	d   external.Doer
+	log bool
 }
 
 func NewClient(doer external.Doer) *Client {
 	return &Client{
 		d: doer,
 	}
+}
+
+func (c *Client) EnableLogs() {
+	c.log = true
+}
+
+func (c *Client) DisableLogs() {
+	c.log = false
 }
 
 func (c Client) doJSON(ctx context.Context, req *http.Request, dest interface{}) (*http.Response, error) {
@@ -37,6 +47,9 @@ func (c Client) doJSON(ctx context.Context, req *http.Request, dest interface{})
 	res.Body = ioutil.NopCloser(bytes.NewReader(body))
 	if err != nil {
 		return res, err
+	}
+	if c.log {
+		log.Printf("%s %s = %s", req.Method, req.URL, string(body))
 	}
 	return res, json.Unmarshal(body, dest)
 }
