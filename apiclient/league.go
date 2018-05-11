@@ -40,6 +40,7 @@ type MiniSeries struct {
 
 type LeaguePosition struct {
 	Rank             string     `datastore:",noindex"`
+	QueueType        string     `datastore:",noindex"`
 	HotStreak        bool       `datastore:",noindex"`
 	MiniSeries       MiniSeries `datastore:",noindex"`
 	Wins             int        `datastore:",noindex"`
