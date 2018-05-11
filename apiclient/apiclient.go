@@ -93,6 +93,11 @@ type Client interface {
 
 	// GetBySummonerID returns a sumoner by summoner ID.
 	GetBySummonerID(ctx context.Context, r region.Region, summonerID int64) (*Summoner, error)
+
+	// ----- Third Party Code API -----
+
+	// GetThirdPartyCodeByID returns a string set by the given summoner
+	GetThirdPartyCodeByID(ctx context.Context, r region.Region, summonerID int64) (string, error)
 }
 
 // client is the internal implementation of Client.
