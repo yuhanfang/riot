@@ -36,6 +36,7 @@ type Item struct {
 	Tags                 []string
 	Effect               map[string]string
 	RequiredChampion     string
+	RequiredAlly         string
 	From                 []string
 	Group                string
 	ConsumeOnFull        bool
