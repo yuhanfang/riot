@@ -120,7 +120,9 @@ const (
 	Syndra       = 134
 	AurelionSol  = 136
 	Kayn         = 141
+	Zoe          = 142
 	Zyra         = 143
+	Kaisa        = 145
 	Gnar         = 150
 	Zac          = 154
 	Yasuo        = 157
@@ -149,7 +151,7 @@ const (
 	Rakan        = 497
 	Xayah        = 498
 	Ornn         = 516
-	Zoe          = 142
+	Pyke	     = 555
 )
 
 func (c Champion) String() string {
@@ -374,8 +376,12 @@ func (c Champion) String() string {
 		return "AurelionSol"
 	case Kayn:
 		return "Kayn"
+	case Zoe:
+		return "Zoe"
 	case Zyra:
 		return "Zyra"
+	case Kaisa:
+		return "Kaisa"
 	case Gnar:
 		return "Gnar"
 	case Zac:
@@ -432,8 +438,8 @@ func (c Champion) String() string {
 		return "Xayah"
 	case Ornn:
 		return "Ornn"
-	case Zoe:
-		return "Zoe"
+	case Pyke:
+		return "Pyke"
 	default:
 		panic(fmt.Sprintf("invalid champion ID %d", c))
 	}
@@ -565,7 +571,9 @@ func All() []Champion {
 		Syndra,
 		AurelionSol,
 		Kayn,
+		Zoe,
 		Zyra,
+		Kaisa,
 		Gnar,
 		Zac,
 		Yasuo,
@@ -594,7 +602,7 @@ func All() []Champion {
 		Rakan,
 		Xayah,
 		Ornn,
-		Zoe,
+		Pyke,
 	}
 	sort.Sort(champions(c))
 	return c
