@@ -5,7 +5,7 @@ type Lane string
 type Type string
 
 const (
-	Middle Lane = "MIDDLE"
+	Middle Lane = "MID"
 	Top         = "TOP"
 	Jungle      = "JUNGLE"
 	Bottom      = "BOTTOM"
