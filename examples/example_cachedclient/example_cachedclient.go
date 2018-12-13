@@ -21,9 +21,9 @@ import (
 )
 
 const (
-	playerID = 84289964
+	playerID = "x9k0laU59wtIYnd8zt1dZmtJ_wXl13bqjhTRRC8FPwTbYVA" // These are encrypted per the api key used
 	name     = "waddlechirp"
-	account  = 237254272
+	account  = "hJN7Yl1FSZLD4vGKUIAMVFI_IWqK7WmY6Lb9S2QGRSUes8U" // These are encrypted per the api key used
 	game     = 2644987649
 	league   = "6b5c7950-5260-11e7-8125-c81f66dbb56c"
 	reg      = region.NA1
