@@ -29,6 +29,12 @@ func (c *client) GetBySummonerName(ctx context.Context, r region.Region, name st
 	return &res, err
 }
 
+func (c *client) GetBySummonerPUUID(ctx context.Context, r region.Region, puuid string) (*Summoner, error) {
+	var res Summoner
+	_, err := c.dispatchAndUnmarshal(ctx, r, "/lol/summoner/v4/summoners/by-puuid", fmt.Sprintf("/%s", puuid), nil, &res)
+	return &res, err
+}
+
 func (c *client) GetBySummonerID(ctx context.Context, r region.Region, summonerID string) (*Summoner, error) {
 	var res Summoner
 	_, err := c.dispatchAndUnmarshal(ctx, r, "/lol/summoner/v4/summoners", fmt.Sprintf("/%s", summonerID), nil, &res)
