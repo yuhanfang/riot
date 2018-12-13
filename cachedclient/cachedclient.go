@@ -223,7 +223,7 @@ func filterMatchlist(m *apiclient.Matchlist, opts *apiclient.GetMatchlistOptions
 
 func (c *client) GetMatchlist(ctx context.Context, r region.Region, accountID string, opt *apiclient.GetMatchlistOptions) (*apiclient.Matchlist, error) {
 	var val apiclient.Matchlist
-	key := fmt.Sprintf("get-matchlist:%s:%d", r, accountID)
+	key := fmt.Sprintf("get-matchlist:%s:%s", r, accountID)
 	t, err := c.d.Get(ctx, key, &val, time.Now())
 	if err == nil && time.Since(t) < 24*time.Hour {
 		return filterMatchlist(&val, opt), nil
@@ -271,7 +271,7 @@ func (c *client) GetFeaturedGames(ctx context.Context, r region.Region) (*apicli
 
 func (c *client) GetByAccountID(ctx context.Context, r region.Region, accountID string) (*apiclient.Summoner, error) {
 	var val apiclient.Summoner
-	key := fmt.Sprintf("get-by-account-id:%s:%d", r, accountID)
+	key := fmt.Sprintf("get-by-account-id:%s:%s", r, accountID)
 	_, err := c.d.Get(ctx, key, &val, zeroTime)
 	if err == nil {
 		return &val, nil
@@ -302,7 +302,7 @@ func (c *client) GetBySummonerName(ctx context.Context, r region.Region, name st
 
 func (c *client) GetBySummonerID(ctx context.Context, r region.Region, summonerID string) (*apiclient.Summoner, error) {
 	var val apiclient.Summoner
-	key := fmt.Sprintf("get-by-summoner-id:%s:%d", r, summonerID)
+	key := fmt.Sprintf("get-by-summoner-id:%s:%s", r, summonerID)
 	_, err := c.d.Get(ctx, key, &val, zeroTime)
 	if err == nil {
 		return &val, nil
