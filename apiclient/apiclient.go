@@ -91,6 +91,9 @@ type Client interface {
 	// GetBySummonerName returns a summoner by summoner name.
 	GetBySummonerName(ctx context.Context, r region.Region, name string) (*Summoner, error)
 
+	// GetBySummonerPUUID returns a summoner by PUUID.
+	GetBySummonerPUUID(ctx context.Context, r region.Region, puuid string) (*Summoner, error)
+
 	// GetBySummonerID returns a sumoner by summoner ID.
 	GetBySummonerID(ctx context.Context, r region.Region, summonerID string) (*Summoner, error)
 
