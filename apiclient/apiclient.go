@@ -50,7 +50,7 @@ type Client interface {
 	GetChallengerLeague(context.Context, region.Region, queue.Queue) (*LeagueList, error)
 
 	// GetGrandmasterLeague returns the grandmaster league for the given queue.
-	GetGrandmasterLeague(ctx context.Context, r region.Region, q queue.Queue)
+	GetGrandmasterLeague(ctx context.Context, r region.Region, q queue.Queue) (*LeagueList, error)
 
 	// GetMasterLeague returns the master league for the given queue.
 	GetMasterLeague(context.Context, region.Region, queue.Queue) (*LeagueList, error)
