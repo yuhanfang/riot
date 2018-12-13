@@ -106,12 +106,12 @@ func (c *client) GetMasterLeague(ctx context.Context, r region.Region, q queue.Q
 	return res, err
 }
 
-func (c *client) GetAllLeaguePositionsForSummoner(ctx context.Context, r region.Region, summonerID int64) ([]apiclient.LeaguePosition, error) {
+func (c *client) GetAllLeaguePositionsForSummoner(ctx context.Context, r region.Region, summonerID string) ([]apiclient.LeaguePosition, error) {
 	type LeaguePositions struct {
 		Positions []apiclient.LeaguePosition
 	}
 	var val LeaguePositions
-	key := fmt.Sprintf("get-all-league-positions-for-summoner:%s:%d", r, summonerID)
+	key := fmt.Sprintf("get-all-league-positions-for-summoner:%s:%s", r, summonerID)
 	t, err := c.d.Get(ctx, key, &val, time.Now())
 	if err == nil && time.Since(t) < 24*time.Hour {
 		return val.Positions, nil
@@ -221,7 +221,7 @@ func filterMatchlist(m *apiclient.Matchlist, opts *apiclient.GetMatchlistOptions
 	return &res
 }
 
-func (c *client) GetMatchlist(ctx context.Context, r region.Region, accountID int64, opt *apiclient.GetMatchlistOptions) (*apiclient.Matchlist, error) {
+func (c *client) GetMatchlist(ctx context.Context, r region.Region, accountID string, opt *apiclient.GetMatchlistOptions) (*apiclient.Matchlist, error) {
 	var val apiclient.Matchlist
 	key := fmt.Sprintf("get-matchlist:%s:%d", r, accountID)
 	t, err := c.d.Get(ctx, key, &val, time.Now())
@@ -237,9 +237,9 @@ func (c *client) GetMatchlist(ctx context.Context, r region.Region, accountID in
 	return filterMatchlist(res, opt), err
 }
 
-func (c *client) GetRecentMatchlist(ctx context.Context, r region.Region, accountID int64) (*apiclient.Matchlist, error) {
+func (c *client) GetRecentMatchlist(ctx context.Context, r region.Region, accountID string) (*apiclient.Matchlist, error) {
 	var val apiclient.Matchlist
-	key := fmt.Sprintf("get-recent-matchlist:%s:%d", r, accountID)
+	key := fmt.Sprintf("get-recent-matchlist:%s:%s", r, accountID)
 	t, err := c.d.Get(ctx, key, &val, time.Now())
 	if err == nil && time.Since(t) < 1*time.Hour {
 		return &val, nil
@@ -269,7 +269,7 @@ func (c *client) GetFeaturedGames(ctx context.Context, r region.Region) (*apicli
 	return res, err
 }
 
-func (c *client) GetByAccountID(ctx context.Context, r region.Region, accountID int64) (*apiclient.Summoner, error) {
+func (c *client) GetByAccountID(ctx context.Context, r region.Region, accountID string) (*apiclient.Summoner, error) {
 	var val apiclient.Summoner
 	key := fmt.Sprintf("get-by-account-id:%s:%d", r, accountID)
 	_, err := c.d.Get(ctx, key, &val, zeroTime)
@@ -300,7 +300,7 @@ func (c *client) GetBySummonerName(ctx context.Context, r region.Region, name st
 	return res, err
 }
 
-func (c *client) GetBySummonerID(ctx context.Context, r region.Region, summonerID int64) (*apiclient.Summoner, error) {
+func (c *client) GetBySummonerID(ctx context.Context, r region.Region, summonerID string) (*apiclient.Summoner, error) {
 	var val apiclient.Summoner
 	key := fmt.Sprintf("get-by-summoner-id:%s:%d", r, summonerID)
 	_, err := c.d.Get(ctx, key, &val, zeroTime)

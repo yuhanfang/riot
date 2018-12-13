@@ -5,7 +5,6 @@ package data_aggregation
 import (
 	"context"
 	"log"
-	"strconv"
 	"sync"
 	"time"
 
@@ -68,7 +67,7 @@ func (a Aggregator) AggregateChallengerLeagueMatches(ctx context.Context, r regi
 	return nil
 }
 
-func (a Aggregator) GetMatchIDsForAccounts(ctx context.Context, r region.Region, q queue.Queue, since time.Time, accountIDs []int64) map[int64]struct{} {
+func (a Aggregator) GetMatchIDsForAccounts(ctx context.Context, r region.Region, q queue.Queue, since time.Time, accountIDs []string) map[int64]struct{} {
 	// Query recent matches for each account.
 	opts := apiclient.GetMatchlistOptions{
 		Queue:     []queue.Queue{q},
@@ -185,10 +184,10 @@ func (a Aggregator) UploadMatches(ctx context.Context, r region.Region, matches 
 	case <-done:
 	}
 }
-func (a Aggregator) getAccountIDsInLeague(ctx context.Context, r region.Region, league *apiclient.LeagueList) []int64 {
+func (a Aggregator) getAccountIDsInLeague(ctx context.Context, r region.Region, league *apiclient.LeagueList) []string {
 	var (
-		accounts   = make(chan int64)
-		accountIDs []int64
+		accounts   = make(chan string)
+		accountIDs []string
 		wg         sync.WaitGroup
 		done       = make(chan bool)
 	)
@@ -197,14 +196,9 @@ func (a Aggregator) getAccountIDsInLeague(ctx context.Context, r region.Region, 
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
-			parsed, err := strconv.ParseInt(entry.PlayerOrTeamID, 10, 64)
+			summoner, err := a.client.GetBySummonerID(ctx, r, entry.PlayerOrTeamID)
 			if err != nil {
-				log.Printf("ParseInt failed for region %s player %s in league %s: %v", r, entry.PlayerOrTeamID, league.LeagueID, err)
-				return
-			}
-			summoner, err := a.client.GetBySummonerID(ctx, r, parsed)
-			if err != nil {
-				log.Printf("GetBySummonerID failed for region %s summoner %d: %v", r, parsed, err)
+				log.Printf("GetBySummonerID failed for region %s summoner %d: %v", r, entry.PlayerOrTeamID, err)
 				return
 			}
 			select {
