@@ -41,7 +41,7 @@ type CurrentGameParticipant struct {
 	Spell2Id      int64                              // The ID of the second summoner spell used by this participant
 	Masteries     []CurrentGameParticipantMasteryDTO // The masteries used by this participant
 	Spell1Id      int64                              // The ID of the first summoner spell used by this participant
-	SummonerId    int64                              // The summoner ID of this participant
+	SummonerId    string                             // The encrypted summoner ID of this participant
 	Perks         Perks
 }
 
@@ -61,9 +61,9 @@ type CurrentGameParticipantMasteryDTO struct {
 	Rank      int   // The number of points put into this mastery by the user
 }
 
-func (c *client) GetCurrentGameInfoBySummoner(ctx context.Context, r region.Region, summonerID int64) (*CurrentGameInfo, error) {
+func (c *client) GetCurrentGameInfoBySummoner(ctx context.Context, r region.Region, summonerID string) (*CurrentGameInfo, error) {
 	var res CurrentGameInfo
-	_, err := c.dispatchAndUnmarshal(ctx, r, "/lol/spectator/v3/active-games/by-summoner", fmt.Sprintf("/%d", summonerID), nil, &res)
+	_, err := c.dispatchAndUnmarshal(ctx, r, "/lol/spectator/v4/active-games/by-summoner", fmt.Sprintf("/%s", summonerID), nil, &res)
 	return &res, err
 }
 
@@ -99,6 +99,6 @@ type FeaturedGameParticipantDTO struct {
 
 func (c *client) GetFeaturedGames(ctx context.Context, r region.Region) (*FeaturedGames, error) {
 	var res FeaturedGames
-	_, err := c.dispatchAndUnmarshal(ctx, r, "/lol/spectator/v3/featured-games", "", nil, &res)
+	_, err := c.dispatchAndUnmarshal(ctx, r, "/lol/spectator/v4/featured-games", "", nil, &res)
 	return &res, err
 }

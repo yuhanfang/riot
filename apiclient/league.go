@@ -57,24 +57,24 @@ type LeaguePosition struct {
 
 func (c *client) GetChallengerLeague(ctx context.Context, r region.Region, q queue.Queue) (*LeagueList, error) {
 	var res LeagueList
-	_, err := c.dispatchAndUnmarshal(ctx, r, "/lol/league/v3/challengerleagues/by-queue", fmt.Sprintf("/%s", q.String()), nil, &res)
+	_, err := c.dispatchAndUnmarshal(ctx, r, "/lol/league/v4/challengerleagues/by-queue", fmt.Sprintf("/%s", q.String()), nil, &res)
 	return &res, err
 }
 
 func (c *client) GetMasterLeague(ctx context.Context, r region.Region, q queue.Queue) (*LeagueList, error) {
 	var res LeagueList
-	_, err := c.dispatchAndUnmarshal(ctx, r, "/lol/league/v3/masterleagues/by-queue", fmt.Sprintf("/%s", q.String()), nil, &res)
+	_, err := c.dispatchAndUnmarshal(ctx, r, "/lol/league/v4/masterleagues/by-queue", fmt.Sprintf("/%s", q.String()), nil, &res)
 	return &res, err
 }
 
 func (c *client) GetLeagueByID(ctx context.Context, r region.Region, leagueID string) (*LeagueList, error) {
 	var res LeagueList
-	_, err := c.dispatchAndUnmarshal(ctx, r, "/lol/league/v3/leagues", fmt.Sprintf("/%s", leagueID), nil, &res)
+	_, err := c.dispatchAndUnmarshal(ctx, r, "/lol/league/v4/leagues", fmt.Sprintf("/%s", leagueID), nil, &res)
 	return &res, err
 }
 
-func (c *client) GetAllLeaguePositionsForSummoner(ctx context.Context, r region.Region, summonerID int64) ([]LeaguePosition, error) {
+func (c *client) GetAllLeaguePositionsForSummoner(ctx context.Context, r region.Region, summonerID string) ([]LeaguePosition, error) {
 	var res []LeaguePosition
-	_, err := c.dispatchAndUnmarshal(ctx, r, "/lol/league/v3/positions/by-summoner", fmt.Sprintf("/%d", summonerID), nil, &res)
+	_, err := c.dispatchAndUnmarshal(ctx, r, "/lol/league/v3/positions/by-summoner", fmt.Sprintf("/%s", summonerID), nil, &res)
 	return res, err
 }

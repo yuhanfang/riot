@@ -19,19 +19,19 @@ import (
 )
 
 type Match struct {
-	SeasonID              season.Season         `datastore:",noindex"`
-	QueueID               queue.Queue           `datastore:",noindex"`
-	GameID                int64                 `datastore:",noindex"`
-	ParticipantIdentities []ParticipantIdentity `datastore:",noindex"`
-	GameVersion           string                `datastore:",noindex"`
-	PlatformID            string                `datastore:",noindex"`
-	GameMode              string                `datastore:",noindex"`
-	MapID                 int                   `datastore:",noindex"`
-	GameType              string                `datastore:",noindex"`
-	Teams                 []TeamStats           `datastore:",noindex"`
-	Participants          []Participant         `datastore:",noindex"`
-	GameDuration          types.Milliseconds    `datastore:",noindex"`
-	GameCreation          types.Milliseconds    `datastore:",noindex"`
+	SeasonID              season.Season         `datastore:",noindex"` // SeasonID is the ID associated with the current season of league.
+	QueueID               queue.Queue           `datastore:",noindex"` // QueueID is a constant that refers to the queue.
+	GameID                int64                 `datastore:",noindex"` // GameID is the ID of the requested game.
+	ParticipantIdentities []ParticipantIdentity `datastore:",noindex"` // Array of player identities in requested game.
+	GameVersion           string                `datastore:",noindex"` // Version that the game was played on.
+	PlatformID            string                `datastore:",noindex"` // PlatformID
+	GameMode              string                `datastore:",noindex"` // GameMode
+	MapID                 int                   `datastore:",noindex"` // MapID is a constant of the map played on.
+	GameType              string                `datastore:",noindex"` // GameType
+	Teams                 []TeamStats           `datastore:",noindex"` // Teams
+	Participants          []Participant         `datastore:",noindex"` // Participants
+	GameDuration          types.Milliseconds    `datastore:",noindex"` // GameDuration is the duration of the game in milliseconds
+	GameCreation          types.Milliseconds    `datastore:",noindex"` // GameCreation is when game was created in epoch
 }
 
 type ParticipantIdentity struct {
@@ -44,10 +44,10 @@ type Player struct {
 	SummonerName      string
 	MatchHistoryUri   string
 	PlatformID        string
-	CurrentAccountID  int64
+	CurrentAccountID  string
 	ProfileIcon       int
-	SummonerID        int64
-	AccountID         int64
+	SummonerID        string
+	AccountID         string
 }
 
 type TeamStats struct {
@@ -315,7 +315,7 @@ func timeToUnixMilliseconds(t time.Time) int64 {
 	return t.UnixNano() / int64(time.Millisecond/time.Nanosecond)
 }
 
-func (c *client) GetMatchlist(ctx context.Context, r region.Region, accountID int64, opts *GetMatchlistOptions) (*Matchlist, error) {
+func (c *client) GetMatchlist(ctx context.Context, r region.Region, accountID string, opts *GetMatchlistOptions) (*Matchlist, error) {
 	var (
 		res  Matchlist
 		vals url.Values
@@ -351,15 +351,15 @@ func (c *client) GetMatchlist(ctx context.Context, r region.Region, accountID in
 			vals.Add("endIndex", fmt.Sprintf("%d", *opts.EndIndex))
 		}
 	}
-	_, err := c.dispatchAndUnmarshal(ctx, r, "/lol/match/v3/matchlists/by-account", fmt.Sprintf("/%d", accountID), vals, &res)
+	_, err := c.dispatchAndUnmarshal(ctx, r, "/lol/match/v4/matchlists/by-account", fmt.Sprintf("/%s", accountID), vals, &res)
 	return &res, err
 }
 
-func (c *client) GetRecentMatchlist(ctx context.Context, r region.Region, accountID int64) (*Matchlist, error) {
+func (c *client) GetRecentMatchlist(ctx context.Context, r region.Region, accountID string) (*Matchlist, error) {
 	var res Matchlist
 	// Recent matchlists are a separate API call from matchlists, even though
 	// both have the same Method. Add "recent" as a uniquifier for this method.
-	_, err := c.dispatchAndUnmarshalWithUniquifier(ctx, r, "/lol/match/v3/matchlists/by-account", fmt.Sprintf("/%d/recent", accountID), nil, "recent", &res)
+	_, err := c.dispatchAndUnmarshalWithUniquifier(ctx, r, "/lol/match/v4/matchlists/by-account", fmt.Sprintf("/%s/recent", accountID), nil, "recent", &res)
 	return &res, err
 }
 
@@ -441,6 +441,6 @@ type MatchEvent struct {
 
 func (c *client) GetMatchTimeline(ctx context.Context, r region.Region, matchID int64) (*MatchTimeline, error) {
 	var res MatchTimeline
-	_, err := c.dispatchAndUnmarshal(ctx, r, "/lol/match/v3/timelines/by-match", fmt.Sprintf("/%d", matchID), nil, &res)
+	_, err := c.dispatchAndUnmarshal(ctx, r, "/lol/match/v4/timelines/by-match", fmt.Sprintf("/%d", matchID), nil, &res)
 	return &res, err
 }

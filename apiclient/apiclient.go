@@ -27,14 +27,14 @@ type Client interface {
 
 	// GetAllChampionMasteries returns all champion mastery entries sorted by
 	// number of champion points descending.
-	GetAllChampionMasteries(ctx context.Context, r region.Region, summonerID int64) ([]ChampionMastery, error)
+	GetAllChampionMasteries(ctx context.Context, r region.Region, summonerID string) ([]ChampionMastery, error)
 
 	// GetChampionMastery returns champion mastery by summoner ID and champion.
-	GetChampionMastery(ctx context.Context, r region.Region, summonerID int64, champ champion.Champion) (*ChampionMastery, error)
+	GetChampionMastery(ctx context.Context, r region.Region, summonerID string, champ champion.Champion) (*ChampionMastery, error)
 
 	// GetChampionMasteryScore returns a player's total champion mastery score,
 	// which is the sum of individual champion mastery levels.
-	GetChampionMasteryScore(ctx context.Context, r region.Region, summonerID int64) (int, error)
+	GetChampionMasteryScore(ctx context.Context, r region.Region, summonerID string) (int, error)
 
 	// ----- Champions API -----
 
@@ -54,7 +54,7 @@ type Client interface {
 
 	// GetAllLeaguePositionsForSummoner returns league positions in all queues
 	// for the given summoner ID.
-	GetAllLeaguePositionsForSummoner(ctx context.Context, r region.Region, summonerID int64) ([]LeaguePosition, error)
+	GetAllLeaguePositionsForSummoner(ctx context.Context, r region.Region, summonerID string) ([]LeaguePosition, error)
 
 	// GetLeagueByID returns the league with given ID, including inactive
 	// entries.
@@ -69,10 +69,10 @@ type Client interface {
 
 	// GetMatchlist returns a matchlist for games played on a given account ID
 	// and filtered using given filter parameters, if any.
-	GetMatchlist(ctx context.Context, r region.Region, accountID int64, opts *GetMatchlistOptions) (*Matchlist, error)
+	GetMatchlist(ctx context.Context, r region.Region, accountID string, opts *GetMatchlistOptions) (*Matchlist, error)
 
 	// GetRecentMatchlist returns the last 20 matches played on the given account ID.
-	GetRecentMatchlist(ctx context.Context, r region.Region, accountID int64) (*Matchlist, error)
+	GetRecentMatchlist(ctx context.Context, r region.Region, accountID string) (*Matchlist, error)
 
 	// ----- Spectator API -----
 
@@ -81,23 +81,23 @@ type Client interface {
 
 	// GetCurrentGameInfoBySummoner returns current game information for a given
 	// summoner ID.
-	GetCurrentGameInfoBySummoner(ctx context.Context, r region.Region, summonerID int64) (*CurrentGameInfo, error)
+	GetCurrentGameInfoBySummoner(ctx context.Context, r region.Region, summonerID string) (*CurrentGameInfo, error)
 
 	// ----- Summoner API -----
 
 	// GetByAccountID returns a summoner by account ID.
-	GetByAccountID(ctx context.Context, r region.Region, accountID int64) (*Summoner, error)
+	GetByAccountID(ctx context.Context, r region.Region, accountID string) (*Summoner, error)
 
 	// GetBySummonerName returns a summoner by summoner name.
 	GetBySummonerName(ctx context.Context, r region.Region, name string) (*Summoner, error)
 
 	// GetBySummonerID returns a sumoner by summoner ID.
-	GetBySummonerID(ctx context.Context, r region.Region, summonerID int64) (*Summoner, error)
+	GetBySummonerID(ctx context.Context, r region.Region, summonerID string) (*Summoner, error)
 
 	// ----- Third Party Code API -----
 
 	// GetThirdPartyCodeByID returns a string set by the given summoner
-	GetThirdPartyCodeByID(ctx context.Context, r region.Region, summonerID int64) (string, error)
+	GetThirdPartyCodeByID(ctx context.Context, r region.Region, summonerID string) (string, error)
 }
 
 // client is the internal implementation of Client.
