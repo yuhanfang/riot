@@ -61,6 +61,12 @@ func (c *client) GetChallengerLeague(ctx context.Context, r region.Region, q que
 	return &res, err
 }
 
+func (c *client) GetGrandmasterLeague(ctx context.Context, r region.Region, q queue.Queue) (*LeagueList, error) {
+	var res LeagueList
+	_, err := c.dispatchAndUnmarshal(ctx, r, "/lol/league/v4/grandmasterleagues/by-queue", fmt.Sprintf("/%s", q.String()), nil, &res)
+	return &res, err
+}
+
 func (c *client) GetMasterLeague(ctx context.Context, r region.Region, q queue.Queue) (*LeagueList, error) {
 	var res LeagueList
 	_, err := c.dispatchAndUnmarshal(ctx, r, "/lol/league/v4/masterleagues/by-queue", fmt.Sprintf("/%s", q.String()), nil, &res)
