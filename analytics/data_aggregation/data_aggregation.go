@@ -120,7 +120,7 @@ func (a Aggregator) GetMatchIDsForAccounts(ctx context.Context, r region.Region,
 					}
 				}
 			} else {
-				log.Printf("GetMatchlist failed for region %s account %d: %v", r, account, err)
+				log.Printf("GetMatchlist failed for region %s account %s: %v", r, account, err)
 			}
 		}()
 	}
@@ -198,7 +198,7 @@ func (a Aggregator) getAccountIDsInLeague(ctx context.Context, r region.Region, 
 			defer wg.Done()
 			summoner, err := a.client.GetBySummonerID(ctx, r, entry.PlayerOrTeamID)
 			if err != nil {
-				log.Printf("GetBySummonerID failed for region %s summoner %d: %v", r, entry.PlayerOrTeamID, err)
+				log.Printf("GetBySummonerID failed for region %s summoner %s: %v", r, entry.PlayerOrTeamID, err)
 				return
 			}
 			select {
