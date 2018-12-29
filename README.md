@@ -33,4 +33,4 @@ Please see CONTRIBUTING if you are interested in contributing features or
 bugfixes.
 
 Feel free to raise an issue with label "question" or DM me at
-[@iso646](https://www.twitter.com/iso646) if you have any questions.
+[@DeepestLearning](https://www.twitter.com/DeepestLearning) if you have any questions.
