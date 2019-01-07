@@ -151,7 +151,8 @@ const (
 	Rakan        = 497
 	Xayah        = 498
 	Ornn         = 516
-	Pyke	     = 555
+	Neeko        = 518
+	Pyke         = 555
 )
 
 func (c Champion) String() string {
@@ -438,6 +439,8 @@ func (c Champion) String() string {
 		return "Xayah"
 	case Ornn:
 		return "Ornn"
+	case Neeko:
+		return "Neeko"
 	case Pyke:
 		return "Pyke"
 	default:
@@ -602,6 +605,7 @@ func All() []Champion {
 		Rakan,
 		Xayah,
 		Ornn,
+		Neeko,
 		Pyke,
 	}
 	sort.Sort(champions(c))

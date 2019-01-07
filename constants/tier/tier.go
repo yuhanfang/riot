@@ -19,11 +19,13 @@ func (t *Tier) UnmarshalJSON(b []byte) error {
 }
 
 const (
-	Challenger Tier = "CHALLENGER"
-	Master          = "MASTER"
-	Diamond         = "DIAMOND"
-	Platinum        = "PLATINUM"
-	Gold            = "GOLD"
-	Silver          = "SILVER"
-	Bronze          = "BRONZE"
+	Challenger  Tier = "CHALLENGER"
+	Grandmaster      = "GRANDMASTER"
+	Master           = "MASTER"
+	Diamond          = "DIAMOND"
+	Platinum         = "PLATINUM"
+	Gold             = "GOLD"
+	Silver           = "SILVER"
+	Bronze           = "BRONZE"
+	Iron             = "IRON"
 )
