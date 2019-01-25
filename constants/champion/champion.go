@@ -151,6 +151,7 @@ const (
 	Rakan        = 497
 	Xayah        = 498
 	Ornn         = 516
+	Sylas	     = 517
 	Neeko        = 518
 	Pyke         = 555
 )
@@ -439,6 +440,8 @@ func (c Champion) String() string {
 		return "Xayah"
 	case Ornn:
 		return "Ornn"
+	case Sylas:
+		return "Sylas"
 	case Neeko:
 		return "Neeko"
 	case Pyke:
@@ -605,6 +608,7 @@ func All() []Champion {
 		Rakan,
 		Xayah,
 		Ornn,
+		Sylas,
 		Neeko,
 		Pyke,
 	}
