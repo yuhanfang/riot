@@ -18,17 +18,17 @@ type LeagueList struct {
 }
 
 type LeagueItem struct {
-	Rank             string
-	HotStreak        bool
-	MiniSeries       MiniSeries
-	Wins             int
-	Veteran          bool
-	Losses           int
-	FreshBlood       bool
-	PlayerOrTeamName string
-	Inactive         bool
-	PlayerOrTeamID   string
-	LeaguePoints     int
+	Rank         string
+	HotStreak    bool
+	MiniSeries   MiniSeries
+	Wins         int
+	Veteran      bool
+	Losses       int
+	FreshBlood   bool
+	SummonerName string
+	Inactive     bool
+	SummonerID   string
+	LeaguePoints int
 }
 
 type MiniSeries struct {
