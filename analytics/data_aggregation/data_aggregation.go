@@ -196,9 +196,9 @@ func (a Aggregator) getAccountIDsInLeague(ctx context.Context, r region.Region, 
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
-			summoner, err := a.client.GetBySummonerID(ctx, r, entry.PlayerOrTeamID)
+			summoner, err := a.client.GetBySummonerID(ctx, r, entry.SummonerID)
 			if err != nil {
-				log.Printf("GetBySummonerID failed for region %s summoner %s: %v", r, entry.PlayerOrTeamID, err)
+				log.Printf("GetBySummonerID failed for region %s summoner %s: %v", r, entry.SummonerID, err)
 				return
 			}
 			select {
