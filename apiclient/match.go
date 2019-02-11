@@ -277,7 +277,7 @@ type Mastery struct {
 
 func (c *client) GetMatch(ctx context.Context, r region.Region, matchID int64) (*Match, error) {
 	var res Match
-	_, err := c.dispatchAndUnmarshal(ctx, r, "/lol/match/v3/matches", fmt.Sprintf("/%d", matchID), nil, &res)
+	_, err := c.dispatchAndUnmarshal(ctx, r, "/lol/match/v4/matches", fmt.Sprintf("/%d", matchID), nil, &res)
 	return &res, err
 }
 

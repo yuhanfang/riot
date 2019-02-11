@@ -27,7 +27,7 @@ type Invocation struct {
 	Region string
 
 	// Method is the relative method path with all options stripped. For example,
-	// a valid method is "/lol/match/v3/matches".
+	// a valid method is "/lol/match/v4/matches".
 	Method string
 
 	// Uniquifier is an optional token that helps make the Invocation unique. In
