@@ -8,101 +8,101 @@ import (
 )
 
 type ItemList struct {
-	Data    map[string]Item
-	Version Version
-	Tree    []ItemTree
-	Groups  []ItemGroup
-	Type    string
+	Data    map[string]Item `json:"data"`
+	Version Version         `json:"version"`
+	Tree    []ItemTree      `json:"tree"`
+	Groups  []ItemGroup     `json:"groups"`
+	Type    string          `json:"type"`
 }
 
 type ItemTree struct {
-	Header string
-	Tags   []string
+	Header string   `json:"header"`
+	Tags   []string `json:"tags"`
 }
 
 type Item struct {
-	Gold                 ItemGold
-	Plaintext            string
-	HideFromAll          bool
-	InStore              bool
-	Into                 []string
-	Id                   int
-	Stats                InventoryDataStats
-	Colloq               string
-	Maps                 map[string]bool
-	SpecialRecipe        int
-	Image                Image
-	Description          string
-	Tags                 []string
-	Effect               map[string]string
-	RequiredChampion     string
-	RequiredAlly         string
-	From                 []string
-	Group                string
-	ConsumeOnFull        bool
-	Name                 string
-	Consumed             bool
-	SanitizedDescription string
-	Depth                int
-	Stacks               int
+	Gold                 ItemGold           `json:"gold"`
+	Plaintext            string             `json:"plaintext"`
+	HideFromAll          bool               `json:"hideFromAll"`
+	InStore              bool               `json:"inStore"`
+	Into                 []string           `json:"into"`
+	Id                   int                `json:"id"`
+	Stats                InventoryDataStats `json:"stats"`
+	Colloq               string             `json:"colloq"`
+	Maps                 map[string]bool    `json:"maps"`
+	SpecialRecipe        int                `json:"specialRecipe"`
+	Image                Image              `json:"image"`
+	Description          string             `json:"description"`
+	Tags                 []string           `json:"tags"`
+	Effect               map[string]string  `json:"effect"`
+	RequiredChampion     string             `json:"requiredChampion"`
+	RequiredAlly         string             `json:"requiredAlly"`
+	From                 []string           `json:"from"`
+	Group                string             `json:"group"`
+	ConsumeOnFull        bool               `json:"consumeOnFull"`
+	Name                 string             `json:"name"`
+	Consumed             bool               `json:"consumed"`
+	SanitizedDescription string             `json:"sanitizedDescription"`
+	Depth                int                `json:"depth"`
+	Stacks               int                `json:"stacks"`
 }
 
 type ItemGold struct {
-	Sell        int
-	Total       int
-	Base        int
-	Purchasable bool
+	Sell        int  `json:"sell"`
+	Total       int  `json:"total"`
+	Base        int  `json:"base"`
+	Purchasable bool `json:"purchasable"`
 }
 
 type InventoryDataStats struct {
-	PercentCritDamageMod     float64
-	PercentSpellBlockMod     float64
-	PercentHPRegenMod        float64
-	PercentMovementSpeedMod  float64
-	FlatSpellBlockMod        float64
-	FlatCritDamageMod        float64
-	FlatEnergyPoolMod        float64
-	PercentLifeStealMod      float64
-	FlatMPPoolMod            float64
-	FlatMovementSpeedMod     float64
-	PercentAttackSpeedMod    float64
-	FlatBlockMod             float64
-	PercentBlockMod          float64
-	FlatEnergyRegenMod       float64
-	PercentSpellVampMod      float64
-	FlatMPRegenMod           float64
-	PercentDodgeMod          float64
-	FlatAttackSpeedMod       float64
-	FlatArmorMod             float64
-	FlatHPRegenMod           float64
-	PercentMagicDamageMod    float64
-	PercentMPPoolMod         float64
-	FlatMagicDamageMod       float64
-	PercentMPRegenMod        float64
-	PercentPhysicalDamageMod float64
-	FlatPhysicalDamageMod    float64
-	PercentHPPoolMod         float64
-	PercentArmorMod          float64
-	PercentCritChanceMod     float64
-	PercentEXPBonus          float64
-	FlatHPPoolMod            float64
-	FlatCritChanceMod        float64
-	FlatEXPBonus             float64
+	PercentCritDamageMod     float64 `json:"percentCritDamageMod"`
+	PercentSpellBlockMod     float64 `json:"percentSpellBlockMod"`
+	PercentHPRegenMod        float64 `json:"percentHPRegenMod"`
+	PercentMovementSpeedMod  float64 `json:"percentMovementSpeedMod"`
+	FlatSpellBlockMod        float64 `json:"flatSpellBlockMod"`
+	FlatCritDamageMod        float64 `json:"flatCritDamageMod"`
+	FlatEnergyPoolMod        float64 `json:"flatEnergyPoolMod"`
+	PercentLifeStealMod      float64 `json:"percentLifeStealMod"`
+	FlatMPPoolMod            float64 `json:"flatMPPoolMod"`
+	FlatMovementSpeedMod     float64 `json:"flatMovementSpeedMod"`
+	PercentAttackSpeedMod    float64 `json:"percentAttackSpeedMod"`
+	FlatBlockMod             float64 `json:"flatBlockMod"`
+	PercentBlockMod          float64 `json:"percentBlockMod"`
+	FlatEnergyRegenMod       float64 `json:"flatEnergyRegenMod"`
+	PercentSpellVampMod      float64 `json:"percentSpellVampMod"`
+	FlatMPRegenMod           float64 `json:"flatMPRegenMod"`
+	PercentDodgeMod          float64 `json:"percentDodgeMod"`
+	FlatAttackSpeedMod       float64 `json:"flatAttackSpeedMod"`
+	FlatArmorMod             float64 `json:"flatArmorMod"`
+	FlatHPRegenMod           float64 `json:"flatHPRegenMod"`
+	PercentMagicDamageMod    float64 `json:"percentMagicDamageMod"`
+	PercentMPPoolMod         float64 `json:"percentMPPoolMod"`
+	FlatMagicDamageMod       float64 `json:"flatMagicDamageMod"`
+	PercentMPRegenMod        float64 `json:"percentMPRegenMod"`
+	PercentPhysicalDamageMod float64 `json:"percentPhysicalDamageMod"`
+	FlatPhysicalDamageMod    float64 `json:"flatPhysicalDamageMod"`
+	PercentHPPoolMod         float64 `json:"percentHPPoolMod"`
+	PercentArmorMod          float64 `json:"percentArmorMod"`
+	PercentCritChanceMod     float64 `json:"percentCritChanceMod"`
+	PercentEXPBonus          float64 `json:"percentEXPBonus"`
+	FlatHPPoolMod            float64 `json:"flatHPPoolMod"`
+	FlatCritChanceMod        float64 `json:"flatCritChanceMod"`
+	FlatEXPBonus             float64 `json:"flatEXPBonus"`
 }
 
 type Image struct {
-	Full   string
-	Group  string
-	Sprite string
-	H      int
-	W      int
-	Y      int
-	X      int
+	Full   string `json:"full"`
+	Group  string `json:"group"`
+	Sprite string `json:"sprite"`
+	H      int    `json:"h"`
+	W      int    `json:"w"`
+	Y      int    `json:"y"`
+	X      int    `json:"x"`
 }
 
 type ItemGroup struct {
-	MaxGroupOwnable string
-	Key             string
+	MaxGroupOwnable string `json:"maxGroupOwnable"`
+	Key             string `json:"key"`
 }
 
 // Items returns all items for the given game version and language.

@@ -9,103 +9,103 @@ import (
 )
 
 type ChampionList struct {
-	Keys    map[string]string
-	Data    map[string]Champion
-	Version string
-	Type    string
-	Format  string
+	Keys    map[string]string   `json:"keys"`
+	Data    map[string]Champion `json:"data"`
+	Version string              `json:"version"`
+	Type    string              `json:"type"`
+	Format  string              `json:"format"`
 }
 
 type Champion struct {
-	Info        ChampionInfo
-	Enemytips   []string
-	Stats       ChampionStats
-	Name        string
-	Title       string
-	Image       Image
-	Tags        []string
-	Partype     string
-	Skins       []ChampionSkin
-	Passive     ChampionPassive
-	Recommended []ChampionRecommended
-	Allytips    []string
-	Key         string
-	Lore        string
-	Id          string
-	Blurb       string
-	Spells      []ChampionSpell
+	Info        ChampionInfo          `json:"info"`
+	Enemytips   []string              `json:"enemytips"`
+	Stats       ChampionStats         `json:"stats"`
+	Name        string                `json:"name"`
+	Title       string                `json:"title"`
+	Image       Image                 `json:"image"`
+	Tags        []string              `json:"tags"`
+	Partype     string                `json:"partype"`
+	Skins       []ChampionSkin        `json:"skins"`
+	Passive     ChampionPassive       `json:"passive"`
+	Recommended []ChampionRecommended `json:"recommended"`
+	Allytips    []string              `json:"allytips"`
+	Key         string                `json:"key"`
+	Lore        string                `json:"lore"`
+	Id          string                `json:"id"`
+	Blurb       string                `json:"blurb"`
+	Spells      []ChampionSpell       `json:"spells"`
 }
 
 type ChampionInfo struct {
-	Difficulty int
-	Attack     int
-	Defense    int
-	Magic      int
+	Difficulty int `json:"difficulty"`
+	Attack     int `json:"attack"`
+	Defense    int `json:"defense"`
+	Magic      int `json:"magic"`
 }
 
 type ChampionStats struct {
-	Armorperlevel        float64
-	Hpperlevel           float64
-	Attackdamage         float64
-	Mpperlevel           float64
-	Attackspeedoffset    float64
-	Armor                float64
-	Hp                   float64
-	Hpregenperlevel      float64
-	Spellblock           float64
-	Attackrange          float64
-	Movespeed            float64
-	Attackdamageperlevel float64
-	Mpregenperlevel      float64
-	Mp                   float64
-	Spellblockperlevel   float64
-	Crit                 float64
-	Mpregen              float64
-	Attackspeedperlevel  float64
-	Hpregen              float64
-	Critperlevel         float64
+	Armorperlevel        float64 `json:"armorperlevel"`
+	Hpperlevel           float64 `json:"hpperlevel"`
+	Attackdamage         float64 `json:"attackdamage"`
+	Mpperlevel           float64 `json:"mpperlevel"`
+	Attackspeedoffset    float64 `json:"attackspeedoffset"`
+	Armor                float64 `json:"armor"`
+	Hp                   float64 `json:"hp"`
+	Hpregenperlevel      float64 `json:"hpregenperlevel"`
+	Spellblock           float64 `json:"spellblock"`
+	Attackrange          float64 `json:"attackrange"`
+	Movespeed            float64 `json:"movespeed"`
+	Attackdamageperlevel float64 `json:"attackdamageperlevel"`
+	Mpregenperlevel      float64 `json:"mpregenperlevel"`
+	Mp                   float64 `json:"mp"`
+	Spellblockperlevel   float64 `json:"spellblockperlevel"`
+	Crit                 float64 `json:"crit"`
+	Mpregen              float64 `json:"mpregen"`
+	Attackspeedperlevel  float64 `json:"attackspeedperlevel"`
+	Hpregen              float64 `json:"hpregen"`
+	Critperlevel         float64 `json:"critperlevel"`
 }
 
 type ChampionSkin struct {
-	Num  int
-	Name string
-	Id   string
+	Num  int    `json:"num"`
+	Name string `json:"name"`
+	Id   string `json:"id"`
 }
 
 type ChampionPassive struct {
-	Image                Image
-	SanitizedDescription string
-	Name                 string
-	Description          string
+	Image                Image  `json:"image"`
+	SanitizedDescription string `json:"sanitizedDescription"`
+	Name                 string `json:"name"`
+	Description          string `json:"description"`
 }
 
 type ChampionRecommended struct {
-	Map      string
-	Blocks   []ChampionBlock
-	Champion string
-	Title    string
-	Priority bool
-	Mode     string
-	Type     string
+	Map      string          `json:"map"`
+	Blocks   []ChampionBlock `json:"blocks"`
+	Champion string          `json:"champion"`
+	Title    string          `json:"title"`
+	Priority bool            `json:"priority"`
+	Mode     string          `json:"mode"`
+	Type     string          `json:"type"`
 }
 
 type ChampionBlock struct {
-	Items   []ChampionBlockItem
-	RecMath bool
-	Type    string
+	Items   []ChampionBlockItem `json:"items"`
+	RecMath bool                `json:"recMath"`
+	Type    string              `json:"type"`
 }
 
 type ChampionBlockItem struct {
-	Count int
-	Id    string
+	Count int    `json:"count"`
+	Id    string `json:"id"`
 }
 
 // RangeOrSelf represents either an ability that targets self, or an ability
 // with a given range. If Self is true, then Range should be ignored.
 // Otherwise, Range holds the ability range.
 type RangeOrSelf struct {
-	Self  bool
-	Range []int
+	Self  bool  `json:"self"`
+	Range []int `json:"range"`
 }
 
 func (r *RangeOrSelf) UnmarshalJSON(b []byte) error {
@@ -128,31 +128,31 @@ func (r *RangeOrSelf) UnmarshalJSON(b []byte) error {
 }
 
 type ChampionSpell struct {
-	CooldownBurn         string
-	Resource             string
-	Leveltip             SpellLevelTip
-	Vars                 []SpellVars
-	CostType             string
-	Image                Image
-	SanitizedDescription string
-	SanitizedTooltip     string
-	Effect               []SpellEffect
-	Tooltip              string
-	Maxrank              int
-	CostBurn             string
-	RangeBurn            string
-	Range                RangeOrSelf
-	Cooldown             []float64
-	Cost                 []int
-	Key                  string
-	Description          string
-	EffectBurn           []string
-	Altimages            []Image
-	Name                 string
+	CooldownBurn         string        `json:"cooldownBurn"`
+	Resource             string        `json:"resource"`
+	Leveltip             SpellLevelTip `json:"leveltip"`
+	Vars                 []SpellVars   `json:"vars"`
+	CostType             string        `json:"costType"`
+	Image                Image         `json:"image"`
+	SanitizedDescription string        `json:"sanitizedDescription"`
+	SanitizedTooltip     string        `json:"sanitizedTooltip"`
+	Effect               []SpellEffect `json:"effect"`
+	Tooltip              string        `json:"tooltip"`
+	Maxrank              int           `json:"maxrank"`
+	CostBurn             string        `json:"costBurn"`
+	RangeBurn            string        `json:"rangeBurn"`
+	Range                RangeOrSelf   `json:"range"`
+	Cooldown             []float64     `json:"cooldown"`
+	Cost                 []int         `json:"cost"`
+	Key                  string        `json:"key"`
+	Description          string        `json:"description"`
+	EffectBurn           []string      `json:"effectBurn"`
+	Altimages            []Image       `json:"altimages"`
+	Name                 string        `json:"name"`
 }
 
 type SpellEffect struct {
-	Details []float64
+	Details []float64 `json:"details"`
 }
 
 func (s *SpellEffect) UnmarshalJSON(b []byte) error {
@@ -160,16 +160,16 @@ func (s *SpellEffect) UnmarshalJSON(b []byte) error {
 }
 
 type SpellLevelTip struct {
-	Effect []string
-	Label  []string
+	Effect []string `json:"effect"`
+	Label  []string `json:"label"`
 }
 
 type SpellVars struct {
-	RanksWith string
-	Dyn       string
-	Link      string
-	Coeff     float64
-	Key       string
+	RanksWith string  `json:"ranksWith"`
+	Dyn       string  `json:"dyn"`
+	Link      string  `json:"link"`
+	Coeff     float64 `json:"coeff"`
+	Key       string  `json:"key"`
 }
 
 func (c *Client) Champions(ctx context.Context, v Version, lang language.Language) (*ChampionList, error) {
