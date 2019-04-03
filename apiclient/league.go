@@ -10,49 +10,49 @@ import (
 )
 
 type LeagueList struct {
-	LeagueID string       `datastore:",noindex"`
-	Tier     tier.Tier    `datastore:",noindex"`
-	Entries  []LeagueItem `datastore:",noindex"`
-	Queue    queue.Queue  `datastore:",noindex"`
-	Name     string       `datastore:",noindex"`
+	LeagueID string       `json:"leagueID",datastore:",noindex"`
+	Tier     tier.Tier    `json:"tier",datastore:",noindex"`
+	Entries  []LeagueItem `json:"entries",datastore:",noindex"`
+	Queue    queue.Queue  `json:"queue",datastore:",noindex"`
+	Name     string       `json:"name",datastore:",noindex"`
 }
 
 type LeagueItem struct {
-	Rank         string
-	HotStreak    bool
-	MiniSeries   MiniSeries
-	Wins         int
-	Veteran      bool
-	Losses       int
-	FreshBlood   bool
-	SummonerName string
-	Inactive     bool
-	SummonerID   string
-	LeaguePoints int
+	Rank         string     `json:"rank"`
+	HotStreak    bool       `json:"hotStreak"`
+	MiniSeries   MiniSeries `json:"miniSeries"`
+	Wins         int        `json:"wins"`
+	Veteran      bool       `json:"veteran"`
+	Losses       int        `json:"losses"`
+	FreshBlood   bool       `json:"freshBlood"`
+	SummonerName string     `json:"summonerName"`
+	Inactive     bool       `json:"inactive"`
+	SummonerID   string     `json:"summonerID"`
+	LeaguePoints int        `json:"leaguePoints"`
 }
 
 type MiniSeries struct {
-	Wins     int
-	Losses   int
-	Target   int
-	Progress string
+	Wins     int    `json:"wins"`
+	Losses   int    `json:"losses"`
+	Target   int    `json:"target"`
+	Progress string `json:"progress"`
 }
 
 type LeaguePosition struct {
-	Rank             string     `datastore:",noindex"`
-	QueueType        string     `datastore:",noindex"`
-	HotStreak        bool       `datastore:",noindex"`
-	MiniSeries       MiniSeries `datastore:",noindex"`
-	Wins             int        `datastore:",noindex"`
-	Veteran          bool       `datastore:",noindex"`
-	Losses           int        `datastore:",noindex"`
-	FreshBlood       bool       `datastore:",noindex"`
-	PlayerOrTeamName string     `datastore:",noindex"`
-	Inactive         bool       `datastore:",noindex"`
-	PlayerOrTeamID   string     `datastore:",noindex"`
-	LeagueID         string     `datastore:",noindex"`
-	Tier             tier.Tier  `datastore:",noindex"`
-	LeaguePoints     int        `datastore:",noindex"`
+	Rank             string     `json:"rank",datastore:",noindex"`
+	QueueType        string     `json:"queueType",datastore:",noindex"`
+	HotStreak        bool       `json:"hotStreak",datastore:",noindex"`
+	MiniSeries       MiniSeries `json:"miniSeries",datastore:",noindex"`
+	Wins             int        `json:"wins",datastore:",noindex"`
+	Veteran          bool       `json:"veteran",datastore:",noindex"`
+	Losses           int        `json:"losses",datastore:",noindex"`
+	FreshBlood       bool       `json:"freshBlood",datastore:",noindex"`
+	PlayerOrTeamName string     `json:"playerOrTeamName",datastore:",noindex"`
+	Inactive         bool       `json:"inactive",datastore:",noindex"`
+	PlayerOrTeamID   string     `json:"playerOrTeamID",datastore:",noindex"`
+	LeagueID         string     `json:"leagueID",datastore:",noindex"`
+	Tier             tier.Tier  `json:"tier",datastore:",noindex"`
+	LeaguePoints     int        `json:"leaguePoints",datastore:",noindex"`
 }
 
 func (c *client) GetChallengerLeague(ctx context.Context, r region.Region, q queue.Queue) (*LeagueList, error) {
