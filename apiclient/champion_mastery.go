@@ -9,14 +9,14 @@ import (
 )
 
 type ChampionMastery struct {
-	ChestGranted                 bool              `datastore:",noindex"` // Is chest granted for this champion or not in current season.
-	ChampionLevel                int               `datastore:",noindex"` // Champion level for specified player and champion combination.
-	ChampionPoints               int               `datastore:",noindex"` // Total number of champion points for this player and champion combination - they are used to determine championLevel.
-	ChampionID                   champion.Champion `datastore:",noindex"` // Champion ID for this entry.
-	PlayerID                     string            `datastore:",noindex"` // Encrypted Player ID for this entry.
-	ChampionPointsUntilNextLevel int64             `datastore:",noindex"` // Number of points needed to achieve next level. Zero if player reached maximum champion level for this champion.
-	ChampionPointsSinceLastLevel int64             `datastore:",noindex"` // Number of points earned since current level has been achieved. Zero if player reached maximum champion level for this champion.
-	LastPlayTime                 int64             `datastore:",noindex"` // Last time this champion was played by this player - in Unix milliseconds time format.
+	ChestGranted                 bool              `json:"chestGranted",datastore:",noindex"`                 // Is chest granted for this champion or not in current season.
+	ChampionLevel                int               `json:"championLevel",datastore:",noindex"`                // Champion level for specified player and champion combination.
+	ChampionPoints               int               `json:"championPoints",datastore:",noindex"`               // Total number of champion points for this player and champion combination - they are used to determine championLevel.
+	ChampionID                   champion.Champion `json:"championID",datastore:",noindex"`                   // Champion ID for this entry.
+	PlayerID                     string            `json:"playerID",datastore:",noindex"`                     // Encrypted Player ID for this entry.
+	ChampionPointsUntilNextLevel int64             `json:"championPointsUntilNextLevel",datastore:",noindex"` // Number of points needed to achieve next level. Zero if player reached maximum champion level for this champion.
+	ChampionPointsSinceLastLevel int64             `json:"championPointsSinceLastLevel",datastore:",noindex"` // Number of points earned since current level has been achieved. Zero if player reached maximum champion level for this champion.
+	LastPlayTime                 int64             `json:"lastPlayTime",datastore:",noindex"`                 // Last time this champion was played by this player - in Unix milliseconds time format.
 }
 
 func (c *client) GetAllChampionMasteries(ctx context.Context, r region.Region, summonerID string) ([]ChampionMastery, error) {

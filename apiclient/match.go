@@ -19,185 +19,185 @@ import (
 )
 
 type Match struct {
-	SeasonID              season.Season         `datastore:",noindex"` // SeasonID is the ID associated with the current season of league.
-	QueueID               queue.Queue           `datastore:",noindex"` // QueueID is a constant that refers to the queue.
-	GameID                int64                 `datastore:",noindex"` // GameID is the ID of the requested game.
-	ParticipantIdentities []ParticipantIdentity `datastore:",noindex"` // Array of player identities in requested game.
-	GameVersion           string                `datastore:",noindex"` // Version that the game was played on.
-	PlatformID            string                `datastore:",noindex"` // PlatformID
-	GameMode              string                `datastore:",noindex"` // GameMode
-	MapID                 int                   `datastore:",noindex"` // MapID is a constant of the map played on.
-	GameType              string                `datastore:",noindex"` // GameType
-	Teams                 []TeamStats           `datastore:",noindex"` // Teams
-	Participants          []Participant         `datastore:",noindex"` // Participants
-	GameDuration          types.Milliseconds    `datastore:",noindex"` // GameDuration is the duration of the game in milliseconds
-	GameCreation          types.Milliseconds    `datastore:",noindex"` // GameCreation is when game was created in epoch
+	SeasonID              season.Season         `json:"seasonID",datastore:",noindex"`              // SeasonID is the ID associated with the current season of league.
+	QueueID               queue.Queue           `json:"queueID",datastore:",noindex"`               // QueueID is a constant that refers to the queue.
+	GameID                int64                 `json:"gameID",datastore:",noindex"`                // GameID is the ID of the requested game.
+	ParticipantIdentities []ParticipantIdentity `json:"participantIdentities",datastore:",noindex"` // Array of player identities in requested game.
+	GameVersion           string                `json:"gameVersion",datastore:",noindex"`           // Version that the game was played on.
+	PlatformID            string                `json:"platformID",datastore:",noindex"`            // PlatformID
+	GameMode              string                `json:"gameMode",datastore:",noindex"`              // GameMode
+	MapID                 int                   `json:"mapID",datastore:",noindex"`                 // MapID is a constant of the map played on.
+	GameType              string                `json:"gameType",datastore:",noindex"`              // GameType
+	Teams                 []TeamStats           `json:"teams",datastore:",noindex"`                 // Teams
+	Participants          []Participant         `json:"participants",datastore:",noindex"`          // Participants
+	GameDuration          types.Milliseconds    `json:"gameDuration",datastore:",noindex"`          // GameDuration is the duration of the game in milliseconds
+	GameCreation          types.Milliseconds    `json:"gameCreation",datastore:",noindex"`          // GameCreation is when game was created in epoch
 }
 
 type ParticipantIdentity struct {
-	Player        Player
-	ParticipantID int
+	Player        Player `json:"player"`
+	ParticipantID int    `json:"participantID"`
 }
 
 type Player struct {
-	CurrentPlatformID string
-	SummonerName      string
-	MatchHistoryUri   string
-	PlatformID        string
-	CurrentAccountID  string
-	ProfileIcon       int
-	SummonerID        string
-	AccountID         string
+	CurrentPlatformID string `json:"currentPlatformID"`
+	SummonerName      string `json:"summonerName"`
+	MatchHistoryUri   string `json:"matchHistoryUri"`
+	PlatformID        string `json:"platformID"`
+	CurrentAccountID  string `json:"currentAccountID"`
+	ProfileIcon       int    `json:"profileIcon"`
+	SummonerID        string `json:"summonerID"`
+	AccountID         string `json:"accountID"`
 }
 
 type TeamStats struct {
-	FirstDragon          bool
-	FirstInhibitor       bool
-	Bans                 []TeamBans
-	BaronKills           int
-	FirstRiftHerald      bool
-	FirstBaron           bool
-	RiftHeraldKills      int
-	FirstBlood           bool
-	TeamID               int
-	FirstTower           bool
-	VilemawKills         int
-	InhibitorKills       int
-	TowerKills           int
-	DominionVictoryScore int
-	Win                  string
-	DragonKills          int
+	FirstDragon          bool       `json:"firstDragon"`
+	FirstInhibitor       bool       `json:"firstInhibitor"`
+	Bans                 []TeamBans `json:"bans"`
+	BaronKills           int        `json:"baronKills"`
+	FirstRiftHerald      bool       `json:"firstRiftHerald"`
+	FirstBaron           bool       `json:"firstBaron"`
+	RiftHeraldKills      int        `json:"riftHeraldKills"`
+	FirstBlood           bool       `json:"firstBlood"`
+	TeamID               int        `json:"teamID"`
+	FirstTower           bool       `json:"firstTower"`
+	VilemawKills         int        `json:"vilemawKills"`
+	InhibitorKills       int        `json:"inhibitorKills"`
+	TowerKills           int        `json:"towerKills"`
+	DominionVictoryScore int        `json:"dominionVictoryScore"`
+	Win                  string     `json:"win"`
+	DragonKills          int        `json:"dragonKills"`
 }
 
 type TeamBans struct {
-	PickTurn   int
-	ChampionID champion.Champion
+	PickTurn   int               `json:"pickTurn"`
+	ChampionID champion.Champion `json:"championID"`
 }
 
 type Participant struct {
-	Stats                     ParticipantStats
-	ParticipantID             int
-	Runes                     []Rune
-	Timeline                  ParticipantTimeline
-	TeamID                    int
-	Spell2ID                  int
-	Masteries                 []Mastery
-	HighestAchievedSeasonTier string
-	Spell1ID                  int
-	ChampionID                champion.Champion
+	Stats                     ParticipantStats    `json:"stats"`
+	ParticipantID             int                 `json:"participantID"`
+	Runes                     []Rune              `json:"runes"`
+	Timeline                  ParticipantTimeline `json:"timeline"`
+	TeamID                    int                 `json:"teamID"`
+	Spell2ID                  int                 `json:"spell2ID"`
+	Masteries                 []Mastery           `json:"masteries"`
+	HighestAchievedSeasonTier string              `json:"highestAchievedSeasonTier"`
+	Spell1ID                  int                 `json:"spell1ID"`
+	ChampionID                champion.Champion   `json:"championID"`
 }
 
 type ParticipantStats struct {
-	PhysicalDamageDealt             int64
-	NeutralMinionsKilledTeamJungle  int
-	MagicDamageDealt                int64
-	TotalPlayerScore                int
-	Deaths                          int
-	Win                             bool
-	NeutralMinionsKilledEnemyJungle int
-	AltarsCaptured                  int
-	LargestCriticalStrike           int
-	TotalDamageDealt                int64
-	MagicDamageDealtToChampions     int64
-	VisionWardsBoughtInGame         int
-	DamageDealtToObjectives         int64
-	LargestKillingSpree             int
-	Item1                           int
-	QuadraKills                     int
-	TeamObjective                   int
-	TotalTimeCrowdControlDealt      int
-	LongestTimeSpentLiving          int
-	WardsKilled                     int
-	FirstTowerAssist                bool
-	FirstTowerKill                  bool
-	Item2                           int
-	Item3                           int
-	Item0                           int
-	FirstBloodAssist                bool
-	VisionScore                     int64
-	WardsPlaced                     int
-	Item4                           int
-	Item5                           int
-	Item6                           int
-	TurretKills                     int
-	TripleKills                     int
-	DamageSelfMitigated             int64
-	ChampLevel                      int
-	NodeNeutralizeAssist            int
-	FirstInhibitorKill              bool
-	GoldEarned                      int
-	MagicalDamageTaken              int64
-	Kills                           int
-	DoubleKills                     int
-	NodeCaptureAssist               int
-	TrueDamageTaken                 int64
-	NodeNeutralize                  int
-	FirstInhibitorAssist            bool
-	Assists                         int
-	UnrealKills                     int
-	NeutralMinionsKilled            int
-	ObjectivePlayerScore            int
-	CombatPlayerScore               int
-	DamageDealtToTurrets            int64
-	AltarsNeutralized               int
-	PhysicalDamageDealtToChampions  int64
-	GoldSpent                       int
-	TrueDamageDealt                 int64
-	TrueDamageDealtToChampions      int64
-	ParticipantID                   int
-	PentaKills                      int
-	TotalHeal                       int64
-	TotalMinionsKilled              int
-	FirstBloodKill                  bool
-	NodeCapture                     int
-	LargestMultiKill                int
-	SightWardsBoughtInGame          int
-	TotalDamageDealtToChampions     int64
-	TotalUnitsHealed                int
-	InhibitorKills                  int
-	TotalScoreRank                  int
-	TotalDamageTaken                int64
-	KillingSprees                   int
-	TimeCCingOthers                 int64
-	PhysicalDamageTaken             int64
+	PhysicalDamageDealt             int64 `json:"physicalDamageDealt"`
+	NeutralMinionsKilledTeamJungle  int   `json:"neutralMinionsKilledTeamJungle"`
+	MagicDamageDealt                int64 `json:"magicDamageDealt"`
+	TotalPlayerScore                int   `json:"totalPlayerScore"`
+	Deaths                          int   `json:"deaths"`
+	Win                             bool  `json:"win"`
+	NeutralMinionsKilledEnemyJungle int   `json:"neutralMinionsKilledEnemyJungle"`
+	AltarsCaptured                  int   `json:"altarsCaptured"`
+	LargestCriticalStrike           int   `json:"largestCriticalStrike"`
+	TotalDamageDealt                int64 `json:"totalDamageDealt"`
+	MagicDamageDealtToChampions     int64 `json:"magicDamageDealtToChampions"`
+	VisionWardsBoughtInGame         int   `json:"visionWardsBoughtInGame"`
+	DamageDealtToObjectives         int64 `json:"damageDealtToObjectives"`
+	LargestKillingSpree             int   `json:"largestKillingSpree"`
+	Item1                           int   `json:"item1"`
+	QuadraKills                     int   `json:"quadraKills"`
+	TeamObjective                   int   `json:"teamObjective"`
+	TotalTimeCrowdControlDealt      int   `json:"totalTimeCrowdControlDealt"`
+	LongestTimeSpentLiving          int   `json:"longestTimeSpentLiving"`
+	WardsKilled                     int   `json:"wardsKilled"`
+	FirstTowerAssist                bool  `json:"firstTowerAssist"`
+	FirstTowerKill                  bool  `json:"firstTowerKill"`
+	Item2                           int   `json:"item2"`
+	Item3                           int   `json:"item3"`
+	Item0                           int   `json:"item0"`
+	FirstBloodAssist                bool  `json:"firstBloodAssist"`
+	VisionScore                     int64 `json:"visionScore"`
+	WardsPlaced                     int   `json:"wardsPlaced"`
+	Item4                           int   `json:"item4"`
+	Item5                           int   `json:"item5"`
+	Item6                           int   `json:"item6"`
+	TurretKills                     int   `json:"turretKills"`
+	TripleKills                     int   `json:"tripleKills"`
+	DamageSelfMitigated             int64 `json:"damageSelfMitigated"`
+	ChampLevel                      int   `json:"champLevel"`
+	NodeNeutralizeAssist            int   `json:"nodeNeutralizeAssist"`
+	FirstInhibitorKill              bool  `json:"firstInhibitorKill"`
+	GoldEarned                      int   `json:"goldEarned"`
+	MagicalDamageTaken              int64 `json:"magicalDamageTaken"`
+	Kills                           int   `json:"kills"`
+	DoubleKills                     int   `json:"doubleKills"`
+	NodeCaptureAssist               int   `json:"nodeCaptureAssist"`
+	TrueDamageTaken                 int64 `json:"trueDamageTaken"`
+	NodeNeutralize                  int   `json:"nodeNeutralize"`
+	FirstInhibitorAssist            bool  `json:"firstInhibitorAssist"`
+	Assists                         int   `json:"assists"`
+	UnrealKills                     int   `json:"unrealKills"`
+	NeutralMinionsKilled            int   `json:"neutralMinionsKilled"`
+	ObjectivePlayerScore            int   `json:"objectivePlayerScore"`
+	CombatPlayerScore               int   `json:"combatPlayerScore"`
+	DamageDealtToTurrets            int64 `json:"damageDealtToTurrets"`
+	AltarsNeutralized               int   `json:"altarsNeutralized"`
+	PhysicalDamageDealtToChampions  int64 `json:"physicalDamageDealtToChampions"`
+	GoldSpent                       int   `json:"goldSpent"`
+	TrueDamageDealt                 int64 `json:"trueDamageDealt"`
+	TrueDamageDealtToChampions      int64 `json:"trueDamageDealtToChampions"`
+	ParticipantID                   int   `json:"participantID"`
+	PentaKills                      int   `json:"pentaKills"`
+	TotalHeal                       int64 `json:"totalHeal"`
+	TotalMinionsKilled              int   `json:"totalMinionsKilled"`
+	FirstBloodKill                  bool  `json:"firstBloodKill"`
+	NodeCapture                     int   `json:"nodeCapture"`
+	LargestMultiKill                int   `json:"largestMultiKill"`
+	SightWardsBoughtInGame          int   `json:"sightWardsBoughtInGame"`
+	TotalDamageDealtToChampions     int64 `json:"totalDamageDealtToChampions"`
+	TotalUnitsHealed                int   `json:"totalUnitsHealed"`
+	InhibitorKills                  int   `json:"inhibitorKills"`
+	TotalScoreRank                  int   `json:"totalScoreRank"`
+	TotalDamageTaken                int64 `json:"totalDamageTaken"`
+	KillingSprees                   int   `json:"killingSprees"`
+	TimeCCingOthers                 int64 `json:"timeCCingOthers"`
+	PhysicalDamageTaken             int64 `json:"physicalDamageTaken"`
 
-	Perk0     int64
-	Perk0Var1 int
-	Perk0Var2 int
-	Perk0Var3 int
+	Perk0     int64 `json:"perk0"`
+	Perk0Var1 int   `json:"perk0Var1"`
+	Perk0Var2 int   `json:"perk0Var2"`
+	Perk0Var3 int   `json:"perk0Var3"`
 
-	Perk1     int64
-	Perk1Var1 int
-	Perk1Var2 int
-	Perk1Var3 int
+	Perk1     int64 `json:"perk1"`
+	Perk1Var1 int   `json:"perk1Var1"`
+	Perk1Var2 int   `json:"perk1Var2"`
+	Perk1Var3 int   `json:"perk1Var3"`
 
-	Perk2     int64
-	Perk2Var1 int
-	Perk2Var2 int
-	Perk2Var3 int
+	Perk2     int64 `json:"perk2"`
+	Perk2Var1 int   `json:"perk2Var1"`
+	Perk2Var2 int   `json:"perk2Var2"`
+	Perk2Var3 int   `json:"perk2Var3"`
 
-	Perk3     int64
-	Perk3Var1 int
-	Perk3Var2 int
-	Perk3Var3 int
+	Perk3     int64 `json:"perk3"`
+	Perk3Var1 int   `json:"perk3Var1"`
+	Perk3Var2 int   `json:"perk3Var2"`
+	Perk3Var3 int   `json:"perk3Var3"`
 
-	Perk4     int64
-	Perk4Var1 int
-	Perk4Var2 int
-	Perk4Var3 int
+	Perk4     int64 `json:"perk4"`
+	Perk4Var1 int   `json:"perk4Var1"`
+	Perk4Var2 int   `json:"perk4Var2"`
+	Perk4Var3 int   `json:"perk4Var3"`
 
-	Perk5     int64
-	Perk5Var1 int
-	Perk5Var2 int
-	Perk5Var3 int
+	Perk5     int64 `json:"perk5"`
+	Perk5Var1 int   `json:"perk5Var1"`
+	Perk5Var2 int   `json:"perk5Var2"`
+	Perk5Var3 int   `json:"perk5Var3"`
 
-	PerkPrimaryStyle int64
-	PerkSubStyle     int64
+	PerkPrimaryStyle int64 `json:"perkPrimaryStyle"`
+	PerkSubStyle     int64 `json:"perkSubStyle"`
 }
 
 type Rune struct {
-	RuneID int
-	Rank   int
+	RuneID int `json:"runeID"`
+	Rank   int `json:"rank"`
 }
 
 // Interval represents a range of game time, measured in minutes.
@@ -205,8 +205,8 @@ type Rune struct {
 // The value 999 is used to represent an endpoint that is coded as the literal
 // string "end"
 type Interval struct {
-	Begin int
-	End   int
+	Begin int `json:"begin"`
+	End   int `json:"end"`
 }
 
 // IntervalValues represents a mapping from intervals to values.
@@ -253,26 +253,26 @@ func (i *IntervalValues) UnmarshalJSON(b []byte) error {
 }
 
 type IntervalValue struct {
-	Interval Interval
-	Value    float64
+	Interval Interval `json:"interval"`
+	Value    float64  `json:"value"`
 }
 
 type ParticipantTimeline struct {
-	Lane                        lane.Lane
-	ParticipantID               int
-	CSDiffPerMinDeltas          IntervalValues
-	GoldPerMinDeltas            IntervalValues
-	XPDiffPerMinDeltas          IntervalValues
-	CreepsPerMinDeltas          IntervalValues
-	XPPerMinDeltas              IntervalValues
-	Role                        string
-	DamageTakenDiffPerMinDeltas IntervalValues
-	DamageTakenPerMinDeltas     IntervalValues
+	Lane                        lane.Lane      `json:"lane"`
+	ParticipantID               int            `json:"participantID"`
+	CSDiffPerMinDeltas          IntervalValues `json:"cSDiffPerMinDeltas"`
+	GoldPerMinDeltas            IntervalValues `json:"goldPerMinDeltas"`
+	XPDiffPerMinDeltas          IntervalValues `json:"xPDiffPerMinDeltas"`
+	CreepsPerMinDeltas          IntervalValues `json:"creepsPerMinDeltas"`
+	XPPerMinDeltas              IntervalValues `json:"xPPerMinDeltas"`
+	Role                        string         `json:"role"`
+	DamageTakenDiffPerMinDeltas IntervalValues `json:"damageTakenDiffPerMinDeltas"`
+	DamageTakenPerMinDeltas     IntervalValues `json:"damageTakenPerMinDeltas"`
 }
 
 type Mastery struct {
-	MasteryID int
-	Rank      int
+	MasteryID int `json:"masteryID"`
+	Rank      int `json:"rank"`
 }
 
 func (c *client) GetMatch(ctx context.Context, r region.Region, matchID int64) (*Match, error) {
@@ -282,33 +282,33 @@ func (c *client) GetMatch(ctx context.Context, r region.Region, matchID int64) (
 }
 
 type Matchlist struct {
-	Matches    []MatchReference `datastore:",noindex"`
-	TotalGames int              `datastore:",noindex"`
-	StartIndex int              `datastore:",noindex"`
-	EndIndex   int              `datastore:",noindex"`
+	Matches    []MatchReference `json:"matches",datastore:",noindex"`
+	TotalGames int              `json:"totalGames",datastore:",noindex"`
+	StartIndex int              `json:"startIndex",datastore:",noindex"`
+	EndIndex   int              `json:"endIndex",datastore:",noindex"`
 }
 
 type MatchReference struct {
-	Lane       lane.Lane
-	GameID     int64
-	Champion   champion.Champion
-	PlatformID string
-	Season     season.Season
-	Queue      queue.Queue
-	Role       string
-	Timestamp  types.Milliseconds
+	Lane       lane.Lane          `json:"lane"`
+	GameID     int64              `json:"gameID"`
+	Champion   champion.Champion  `json:"champion"`
+	PlatformID string             `json:"platformID"`
+	Season     season.Season      `json:"season"`
+	Queue      queue.Queue        `json:"queue"`
+	Role       string             `json:"role"`
+	Timestamp  types.Milliseconds `json:"timestamp"`
 }
 
 // GetMatchlistOptions provides filtering options for GetMatchlist. The zero
 // value means that the option will not be used in filtering.
 type GetMatchlistOptions struct {
-	Queue      []queue.Queue
-	Season     []season.Season
-	Champion   []champion.Champion
-	BeginTime  *time.Time
-	EndTime    *time.Time
-	BeginIndex *int
-	EndIndex   *int
+	Queue      []queue.Queue       `json:"queue"`
+	Season     []season.Season     `json:"season"`
+	Champion   []champion.Champion `json:"champion"`
+	BeginTime  *time.Time          `json:"beginTime"`
+	EndTime    *time.Time          `json:"endTime"`
+	BeginIndex *int                `json:"beginIndex"`
+	EndIndex   *int                `json:"endIndex"`
 }
 
 func timeToUnixMilliseconds(t time.Time) int64 {
@@ -364,14 +364,14 @@ func (c *client) GetRecentMatchlist(ctx context.Context, r region.Region, accoun
 }
 
 type MatchTimeline struct {
-	Frames        []MatchFrame       `datastore:",noindex"`
-	FrameInterval types.Milliseconds `datastore:",noindex"`
+	Frames        []MatchFrame       `json:"frames",datastore:",noindex"`
+	FrameInterval types.Milliseconds `json:"frameInterval",datastore:",noindex"`
 }
 
 // ParticipantFrames stores frames corresponding to each participant. The order
 // is not defined (i.e. do not assume the order is ascending by participant ID).
 type ParticipantFrames struct {
-	Frames []MatchParticipantFrame
+	Frames []MatchParticipantFrame `json:"frames"`
 }
 
 func (p *ParticipantFrames) UnmarshalJSON(b []byte) error {
@@ -390,53 +390,53 @@ func (p *ParticipantFrames) UnmarshalJSON(b []byte) error {
 }
 
 type MatchFrame struct {
-	Timestamp         types.Milliseconds
-	ParticipantFrames ParticipantFrames
-	Events            []MatchEvent
+	Timestamp         types.Milliseconds `json:"timestamp"`
+	ParticipantFrames ParticipantFrames  `json:"participantFrames"`
+	Events            []MatchEvent       `json:"events"`
 }
 
 type MatchParticipantFrame struct {
-	TotalGold           int
-	TeamScore           int
-	ParticipantID       int
-	Level               int
-	CurrentGold         int
-	MinionsKilled       int
-	DominionScore       int
-	Position            MatchPosition
-	XP                  int
-	JungleMinionsKilled int
+	TotalGold           int           `json:"totalGold"`
+	TeamScore           int           `json:"teamScore"`
+	ParticipantID       int           `json:"participantID"`
+	Level               int           `json:"level"`
+	CurrentGold         int           `json:"currentGold"`
+	MinionsKilled       int           `json:"minionsKilled"`
+	DominionScore       int           `json:"dominionScore"`
+	Position            MatchPosition `json:"position"`
+	XP                  int           `json:"xP"`
+	JungleMinionsKilled int           `json:"jungleMinionsKilled"`
 }
 
 type MatchPosition struct {
-	Y int
-	X int
+	Y int `json:"y"`
+	X int `json:"x"`
 }
 
 type MatchEvent struct {
-	EventType               string
-	TowerType               string
-	TeamID                  int
-	AscendedType            string
-	KillerID                int
-	LevelUpType             string
-	PointCaptured           string
-	AssistingParticipantIDs []int
-	WardType                string
-	MonsterType             string
-	Type                    event.Event
-	SkillSlot               int
-	VictimID                int
-	Timestamp               types.Milliseconds
-	AfterID                 int
-	MonsterSubType          string
-	LaneType                lane.Type
-	ItemID                  int
-	ParticipantID           int
-	BuildingType            string
-	CreatorID               int
-	Position                MatchPosition
-	BeforeID                int
+	EventType               string             `json:"eventType"`
+	TowerType               string             `json:"towerType"`
+	TeamID                  int                `json:"teamID"`
+	AscendedType            string             `json:"ascendedType"`
+	KillerID                int                `json:"killerID"`
+	LevelUpType             string             `json:"levelUpType"`
+	PointCaptured           string             `json:"pointCaptured"`
+	AssistingParticipantIDs []int              `json:"assistingParticipantIDs"`
+	WardType                string             `json:"wardType"`
+	MonsterType             string             `json:"monsterType"`
+	Type                    event.Event        `json:"type"`
+	SkillSlot               int                `json:"skillSlot"`
+	VictimID                int                `json:"victimID"`
+	Timestamp               types.Milliseconds `json:"timestamp"`
+	AfterID                 int                `json:"afterID"`
+	MonsterSubType          string             `json:"monsterSubType"`
+	LaneType                lane.Type          `json:"laneType"`
+	ItemID                  int                `json:"itemID"`
+	ParticipantID           int                `json:"participantID"`
+	BuildingType            string             `json:"buildingType"`
+	CreatorID               int                `json:"creatorID"`
+	Position                MatchPosition      `json:"position"`
+	BeforeID                int                `json:"beforeID"`
 }
 
 func (c *client) GetMatchTimeline(ctx context.Context, r region.Region, matchID int64) (*MatchTimeline, error) {

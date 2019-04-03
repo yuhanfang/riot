@@ -8,13 +8,13 @@ import (
 )
 
 type Summoner struct {
-	ProfileIconID int    `datastore:",noindex"` // ID of the summoner icon associated with the summoner.
-	Name          string `datastore:",noindex"` // Summoner name.
-	PUUID		  string `datastore:",noinex"`  // PUUID is the player universally unique identifier.
-	SummonerLevel int64  `datastore:",noindex"` // Summoner level associated with the summoner.
-	AccountID     string `datastore:",noindex"` // Encrypted account ID.
-	ID            string `datastore:",noindex"` // Encrypted summoner ID.
-	RevisionDate  int64  `datastore:",noindex"` // Date summoner was last modified specified as epoch milliseconds. The following events will update this timestamp: profile icon change, playing the tutorial or advanced tutorial, finishing a game, summoner name change
+	ProfileIconID int    `json:"profileIconID",datastore:",noindex"` // ID of the summoner icon associated with the summoner.
+	Name          string `json:"name",datastore:",noindex"`          // Summoner name.
+	PUUID         string `json:"pUUID",datastore:",noinex"`          // PUUID is the player universally unique identifier.
+	SummonerLevel int64  `json:"summonerLevel",datastore:",noindex"` // Summoner level associated with the summoner.
+	AccountID     string `json:"accountID",datastore:",noindex"`     // Encrypted account ID.
+	ID            string `json:"iD",datastore:",noindex"`            // Encrypted summoner ID.
+	RevisionDate  int64  `json:"revisionDate",datastore:",noindex"`  // Date summoner was last modified specified as epoch milliseconds. The following events will update this timestamp: profile icon change, playing the tutorial or advanced tutorial, finishing a game, summoner name change
 }
 
 func (c *client) GetByAccountID(ctx context.Context, r region.Region, accountID string) (*Summoner, error) {
