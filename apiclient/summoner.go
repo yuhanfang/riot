@@ -13,7 +13,7 @@ type Summoner struct {
 	PUUID         string `json:"pUUID",datastore:",noinex"`          // PUUID is the player universally unique identifier.
 	SummonerLevel int64  `json:"summonerLevel",datastore:",noindex"` // Summoner level associated with the summoner.
 	AccountID     string `json:"accountID",datastore:",noindex"`     // Encrypted account ID.
-	ID            string `json:"iD",datastore:",noindex"`            // Encrypted summoner ID.
+	ID            string `json:"id",datastore:",noindex"`            // Encrypted summoner ID.
 	RevisionDate  int64  `json:"revisionDate",datastore:",noindex"`  // Date summoner was last modified specified as epoch milliseconds. The following events will update this timestamp: profile icon change, playing the tutorial or advanced tutorial, finishing a game, summoner name change
 }
 
