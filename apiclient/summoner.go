@@ -10,7 +10,7 @@ import (
 type Summoner struct {
 	ProfileIconID int    `json:"profileIconID",datastore:",noindex"` // ID of the summoner icon associated with the summoner.
 	Name          string `json:"name",datastore:",noindex"`          // Summoner name.
-	PUUID         string `json:"pUUID",datastore:",noinex"`          // PUUID is the player universally unique identifier.
+	PUUID         string `json:"puuid",datastore:",noinex"`          // PUUID is the player universally unique identifier.
 	SummonerLevel int64  `json:"summonerLevel",datastore:",noindex"` // Summoner level associated with the summoner.
 	AccountID     string `json:"accountID",datastore:",noindex"`     // Encrypted account ID.
 	ID            string `json:"id",datastore:",noindex"`            // Encrypted summoner ID.
