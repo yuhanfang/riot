@@ -3,7 +3,6 @@ package apiclient
 import (
 	"context"
 	"fmt"
-
 	"github.com/yuhanfang/riot/constants/queue"
 	"github.com/yuhanfang/riot/constants/region"
 	"github.com/yuhanfang/riot/constants/tier"
@@ -39,20 +38,21 @@ type MiniSeries struct {
 }
 
 type LeaguePosition struct {
-	Rank             string     `json:"rank",datastore:",noindex"`
-	QueueType        string     `json:"queueType",datastore:",noindex"`
-	HotStreak        bool       `json:"hotStreak",datastore:",noindex"`
-	MiniSeries       MiniSeries `json:"miniSeries",datastore:",noindex"`
-	Wins             int        `json:"wins",datastore:",noindex"`
-	Veteran          bool       `json:"veteran",datastore:",noindex"`
-	Losses           int        `json:"losses",datastore:",noindex"`
-	FreshBlood       bool       `json:"freshBlood",datastore:",noindex"`
-	PlayerOrTeamName string     `json:"playerOrTeamName",datastore:",noindex"`
-	Inactive         bool       `json:"inactive",datastore:",noindex"`
-	PlayerOrTeamID   string     `json:"playerOrTeamID",datastore:",noindex"`
-	LeagueID         string     `json:"leagueID",datastore:",noindex"`
-	Tier             tier.Tier  `json:"tier",datastore:",noindex"`
-	LeaguePoints     int        `json:"leaguePoints",datastore:",noindex"`
+	QueueType    string     `json:"queueType",datastore:",noindex"`
+	SummonerName string     `json:"summonerName",datastore:",noindex"`
+	HotStreak    bool       `json:"hotStreak",datastore:",noindex"`
+	MiniSeries   MiniSeries `json:"miniSeries",datastore:",noindex"`
+	Wins         int        `json:"wins",datastore:",noindex"`
+	Veteran      bool       `json:"veteran",datastore:",noindex"`
+	Losses       int        `json:"losses",datastore:",noindex"`
+	Rank         string     `json:"rank",datastore:",noindex"`
+	LeagueID     string     `json:"leagueId",datastore:",noindex"`
+	Inactive     bool       `json:"inactive",datastore:",noindex"`
+	FreshBlood   bool       `json:"freshBlood",datastore:",noindex"`
+	LeagueName   string     `json:"leagueName",datastore:",noindex"`
+	Position     string     `json:"position",datastore:",noindex"`
+	Tier         tier.Tier  `json:"tier",datastore:",noindex"`
+	LeaguePoints int        `json:"leaguePoints",datastore:",noindex"`
 }
 
 func (c *client) GetChallengerLeague(ctx context.Context, r region.Region, q queue.Queue) (*LeagueList, error) {
@@ -81,6 +81,6 @@ func (c *client) GetLeagueByID(ctx context.Context, r region.Region, leagueID st
 
 func (c *client) GetAllLeaguePositionsForSummoner(ctx context.Context, r region.Region, summonerID string) ([]LeaguePosition, error) {
 	var res []LeaguePosition
-	_, err := c.dispatchAndUnmarshal(ctx, r, "/lol/league/v3/positions/by-summoner", fmt.Sprintf("/%s", summonerID), nil, &res)
+	_, err := c.dispatchAndUnmarshal(ctx, r, "/lol/league/v4/positions/by-summoner", fmt.Sprintf("/%s", summonerID), nil, &res)
 	return res, err
 }
