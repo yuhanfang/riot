@@ -142,6 +142,7 @@ const (
 	Aatrox       = 266
 	Nami         = 267
 	Azir         = 268
+	Yuumi        = 350
 	Thresh       = 412
 	Illaoi       = 420
 	RekSai       = 421
@@ -151,7 +152,7 @@ const (
 	Rakan        = 497
 	Xayah        = 498
 	Ornn         = 516
-	Sylas	     = 517
+	Sylas        = 517
 	Neeko        = 518
 	Pyke         = 555
 )
@@ -422,6 +423,8 @@ func (c Champion) String() string {
 		return "Nami"
 	case Azir:
 		return "Azir"
+	case Yuumi:
+		return "Yuumi"
 	case Thresh:
 		return "Thresh"
 	case Illaoi:
@@ -599,6 +602,7 @@ func All() []Champion {
 		Aatrox,
 		Nami,
 		Azir,
+		Yuumi,
 		Thresh,
 		Illaoi,
 		RekSai,
