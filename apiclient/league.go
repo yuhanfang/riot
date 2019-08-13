@@ -81,6 +81,6 @@ func (c *client) GetLeagueByID(ctx context.Context, r region.Region, leagueID st
 
 func (c *client) GetAllLeaguePositionsForSummoner(ctx context.Context, r region.Region, summonerID string) ([]LeaguePosition, error) {
 	var res []LeaguePosition
-	_, err := c.dispatchAndUnmarshal(ctx, r, "/lol/league/v4/positions/by-summoner", fmt.Sprintf("/%s", summonerID), nil, &res)
+	_, err := c.dispatchAndUnmarshal(ctx, r, "/lol/league/v4/entries/by-summoner", fmt.Sprintf("/%s", summonerID), nil, &res)
 	return res, err
 }
