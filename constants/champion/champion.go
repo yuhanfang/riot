@@ -138,6 +138,7 @@ const (
 	Zed          = 238
 	Kled         = 240
 	Ekko         = 245
+	Qiyana       = 246
 	Vi           = 254
 	Aatrox       = 266
 	Nami         = 267
@@ -449,6 +450,8 @@ func (c Champion) String() string {
 		return "Neeko"
 	case Pyke:
 		return "Pyke"
+	case Qiyana:
+		return "Qiyana"
 	default:
 		panic(fmt.Sprintf("invalid champion ID %d", c))
 	}
@@ -615,6 +618,7 @@ func All() []Champion {
 		Sylas,
 		Neeko,
 		Pyke,
+		Qiyana,
 	}
 	sort.Sort(champions(c))
 	return c
