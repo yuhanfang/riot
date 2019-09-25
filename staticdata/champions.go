@@ -165,11 +165,11 @@ type SpellLevelTip struct {
 }
 
 type SpellVars struct {
-	RanksWith string  `json:"ranksWith"`
-	Dyn       string  `json:"dyn"`
-	Link      string  `json:"link"`
-	Coeff     float64 `json:"coeff"`
-	Key       string  `json:"key"`
+	RanksWith string      `json:"ranksWith"`
+	Dyn       string      `json:"dyn"`
+	Link      string      `json:"link"`
+	Coeff     interface{} `json:"coeff"`
+	Key       string      `json:"key"`
 }
 
 func (c *Client) Champions(ctx context.Context, v Version, lang language.Language) (*ChampionList, error) {
@@ -177,4 +177,12 @@ func (c *Client) Champions(ctx context.Context, v Version, lang language.Languag
 	var champList ChampionList
 	err := c.getJSON(ctx, url, &champList)
 	return &champList, err
+}
+
+func (c *Client) Champion(ctx context.Context, v Version, lang language.Language, championName string) (*Champion, error) {
+	url := fmt.Sprintf("http://ddragon.leagueoflegends.com/cdn/%s/data/%s/champion/%s.json", v, lang, championName)
+	var champList ChampionList
+	err := c.getJSON(ctx, url, &champList)
+	champ := champList.Data[championName]
+	return &champ, err
 }
